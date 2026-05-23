@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app-runtime
+    env_file:
+      - .env.docker
+    restart: unless-stopped
+    volumes:
+      - app_storage:/var/www/html/storage
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app-runtime
+    env_file:
+      - .env.docker
+    command: ["php", "artisan", "queue:work", "--verbose", "--tries=3", "--timeout=90", "--sleep=3"]
+    restart: unless-stopped
+    depends_on:
+      - app
+    volumes:
+      - app_storage:/var/www/html/storage
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: nginx-runtime
+    depends_on:
+      - app
+    ports:
+      - "${APP_PORT:-80}:80"
+    restart: unless-stopped
+    volumes:
+      - app_storage:/var/www/storage:ro
+
+volumes:
+  app_storage:
