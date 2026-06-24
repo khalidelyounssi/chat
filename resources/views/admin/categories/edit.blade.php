@@ -4,7 +4,7 @@
 @section('page-title', 'Modifier la categorie')
 
 @section('content')
-    <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data" class="card-soft p-6 sm:p-8">
+    <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data" class="admin-panel p-6 sm:p-8">
         @csrf
         @method('PUT')
         @include('admin.categories._form', ['category' => $category])

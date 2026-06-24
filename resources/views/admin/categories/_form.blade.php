@@ -11,6 +11,7 @@
     <div>
         <label for="is_active" class="label-base">Statut</label>
         <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-stone-300 bg-white px-4 py-2.5">
+            <input type="hidden" name="is_active" value="0">
             <input id="is_active" type="checkbox" name="is_active" value="1" class="h-4 w-4 rounded border-stone-300 text-amber-600 focus:ring-amber-500" @checked(old('is_active', $category?->is_active ?? true))>
             <span class="text-sm text-stone-700">Categorie active</span>
         </label>

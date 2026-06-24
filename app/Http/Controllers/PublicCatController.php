@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cat;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -19,9 +20,11 @@ class PublicCatController extends Controller
         $selectedCategorySlug = trim((string) $request->query('categorie', ''));
         $selectedCategory = null;
         $invalidCategory = false;
+        $publicStatuses = config('chatterie.public_statuses', ['available', 'reserved']);
 
         $query = Cat::query()
             ->with('category')
+            ->whereIn('status', $publicStatuses)
             ->latest();
 
         if ($selectedCategorySlug !== '') {
@@ -48,12 +51,31 @@ class PublicCatController extends Controller
 
     public function show(Cat $cat): View
     {
+        abort_unless(
+            in_array($cat->status, config('chatterie.public_statuses', ['available', 'reserved']), true),
+            404
+        );
+
         $cat->load('category');
 
-        $whatsappMessage = sprintf('Bonjour je suis interesse par %s', $cat->name);
+        $whatsappMessage = sprintf("Bonjour, je souhaite recevoir plus d'informations sur %s.", $cat->name);
+
+        $relatedCats = Cat::query()
+            ->with('category')
+            ->whereKeyNot($cat->getKey())
+            ->whereIn('status', config('chatterie.public_statuses', ['available', 'reserved']))
+            ->when(
+                $cat->category_id,
+                fn (Builder $query): Builder => $query->where('category_id', $cat->category_id),
+                fn (Builder $query): Builder => $query
+            )
+            ->latest()
+            ->take(3)
+            ->get();
 
         return view('cats.show', [
             'cat' => $cat,
+            'relatedCats' => $relatedCats,
             'whatsappMessage' => $whatsappMessage,
         ]);
     }

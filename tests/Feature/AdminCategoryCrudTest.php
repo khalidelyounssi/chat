@@ -41,6 +41,17 @@ class AdminCategoryCrudTest extends TestCase
 
         $category->refresh();
         $this->assertSame('adultes', $category->slug);
+        $this->assertTrue($category->is_active);
+
+        $disableResponse = $this->put(route('admin.categories.update', $category), [
+            'name' => 'Adultes',
+            'description' => 'Categorie adultes',
+            'is_active' => '0',
+        ]);
+
+        $disableResponse->assertRedirect(route('admin.categories.index'));
+
+        $category->refresh();
         $this->assertFalse($category->is_active);
 
         $deleteResponse = $this->delete(route('admin.categories.destroy', $category));

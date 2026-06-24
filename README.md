@@ -9,10 +9,17 @@ composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
+php artisan db:seed
+php artisan storage:link
 npm install
 npm run build
 php artisan serve
 ```
+
+## Acces admin local
+
+- Email: `admin@soleils-orient.test`
+- Mot de passe: `admin2000`
 
 ## Deploiement
 

@@ -1,13 +1,58 @@
 @php
+    $site = config('chatterie.site');
+    $siteName = (string) data_get($site, 'name', "Chatterie des Soleils d'Orient");
+    $siteTagline = (string) data_get($site, 'tagline', "Chatterie d'Abyssins");
+    $metaTitle = trim($__env->yieldContent('title', $siteName));
+    $metaDescription = trim($__env->yieldContent('meta_description', (string) data_get($site, 'meta_description', '')));
+    $canonicalUrl = trim($__env->yieldContent('canonical', url()->current()));
+    $robots = trim($__env->yieldContent('meta_robots', 'index,follow'));
+    $customOgImage = trim($__env->yieldContent('og_image', ''));
+    $defaultOgImage = asset(ltrim((string) data_get($site, 'og_image', 'images/soleils-orient-emblem.png'), '/'));
+    $ogImage = $customOgImage !== '' ? $customOgImage : $defaultOgImage;
+    $sitePhone = (string) data_get($site, 'phone', '');
+    $phoneLink = preg_replace('/[^+\d]/', '', $sitePhone);
+    $siteEmail = (string) data_get($site, 'email', '');
+    $city = (string) data_get($site, 'city', '');
+    $country = (string) data_get($site, 'country', '');
+    $address = (string) data_get($site, 'address', '');
+    $instagramUrl = (string) config('chatterie.socials.instagram', '');
+    $facebookUrl = (string) config('chatterie.socials.facebook', '');
     $whatsAppNumber = preg_replace('/\D+/', '', (string) config('chatterie.whatsapp.number'));
+    $hasWhatsApp = strlen($whatsAppNumber) >= 8;
     $message = $whatsappMessage ?? config('chatterie.whatsapp.default_text');
-    $whatsAppLink = $whatsAppNumber
+    $whatsAppLink = $hasWhatsApp
         ? 'https://wa.me/' . $whatsAppNumber . '?text=' . rawurlencode((string) $message)
-        : '#';
+        : null;
     $navItems = [
         ['label' => 'Accueil', 'route' => 'home', 'active' => request()->routeIs('home')],
         ['label' => 'Nos chats', 'route' => 'cats.index', 'active' => request()->routeIs('cats.*')],
         ['label' => 'A propos', 'route' => 'about', 'active' => request()->routeIs('about')],
+        ['label' => 'Contact', 'route' => 'contact', 'active' => request()->routeIs('contact')],
+    ];
+    $sameAs = array_values(array_filter([$instagramUrl, $facebookUrl]));
+    $organizationSchema = array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'AnimalShelter',
+        'name' => $siteName,
+        'description' => $metaDescription,
+        'url' => url('/'),
+        'image' => $defaultOgImage,
+        'telephone' => $sitePhone ?: null,
+        'email' => $siteEmail ?: null,
+        'address' => $address !== '' ? [
+            '@type' => 'PostalAddress',
+            'streetAddress' => $address,
+            'addressLocality' => $city ?: null,
+            'addressCountry' => $country ?: null,
+        ] : null,
+        'sameAs' => $sameAs ?: null,
+    ], fn ($value) => $value !== null && $value !== '' && $value !== []);
+    $websiteSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebSite',
+        'name' => $siteName,
+        'url' => url('/'),
+        'description' => $metaDescription,
     ];
 @endphp
 <!DOCTYPE html>
@@ -15,7 +60,21 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>@yield('title', "Chatterie des Soleils d'Orient")</title>
+        <title>{{ $metaTitle }}</title>
+        <meta name="description" content="{{ $metaDescription }}">
+        <meta name="robots" content="{{ $robots }}">
+        <link rel="canonical" href="{{ $canonicalUrl }}">
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="fr_FR">
+        <meta property="og:site_name" content="{{ $siteName }}">
+        <meta property="og:title" content="{{ $metaTitle }}">
+        <meta property="og:description" content="{{ $metaDescription }}">
+        <meta property="og:url" content="{{ $canonicalUrl }}">
+        <meta property="og:image" content="{{ $ogImage }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $metaTitle }}">
+        <meta name="twitter:description" content="{{ $metaDescription }}">
+        <meta name="twitter:image" content="{{ $ogImage }}">
         <link rel="icon" type="image/png" href="{{ asset('images/soleils-orient-emblem.png') }}">
         <link rel="apple-touch-icon" href="{{ asset('images/soleils-orient-emblem.png') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,8 +83,24 @@
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
+        <script type="application/ld+json">@json($organizationSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+        <script type="application/ld+json">@json($websiteSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+        @stack('structured_data')
     </head>
-    <body class="site-shell">
+    <body class="site-shell is-loading">
+        <div class="page-loader" data-page-loader aria-hidden="true">
+            <div class="page-loader-shell">
+                <span class="page-loader-mark">
+                    <img src="{{ asset('images/soleils-orient-emblem.png') }}" alt="" class="h-full w-full rounded-full object-cover">
+                </span>
+                <div class="page-loader-lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
         <header class="sticky top-0 z-50 border-b border-amber-100/70 bg-white/70 backdrop-blur-xl">
             <div class="container-page py-4">
                 <div class="navbar-shell px-4 py-4 sm:px-5 lg:px-6">
@@ -35,8 +110,8 @@
                                 <img src="{{ asset('images/soleils-orient-emblem.png') }}" alt="Soleils d'Orient" class="h-full w-full rounded-full object-cover">
                             </span>
                             <span class="min-w-0">
-                                <span class="block truncate font-display text-2xl leading-none text-amber-900 sm:text-3xl">Soleils d'Orient</span>
-                                <span class="mt-1 block text-[10px] font-semibold uppercase tracking-[0.24em] text-amber-800/60 sm:text-xs">Chatterie d'Abyssins</span>
+                                <span class="block truncate font-display text-2xl leading-none text-amber-900 sm:text-3xl">{{ $siteName }}</span>
+                                <span class="mt-1 block text-[10px] font-semibold uppercase tracking-[0.24em] text-amber-800/60 sm:text-xs">{{ $siteTagline }}</span>
                             </span>
                         </a>
 
@@ -67,12 +142,20 @@
                                     {{ $item['label'] }}
                                 </a>
                             @endforeach
-                            <a href="{{ route('admin.dashboard') }}" class="nav-pill">Administration</a>
+                            @auth
+                                <a href="{{ route('admin.dashboard') }}" class="nav-pill">Administration</a>
+                            @endauth
                         </nav>
 
-                        <a href="{{ $whatsAppLink }}" target="_blank" rel="noopener noreferrer" class="navbar-cta">
-                            Contactez-nous
-                        </a>
+                        @if ($whatsAppLink)
+                            <a href="{{ $whatsAppLink }}" target="_blank" rel="noopener noreferrer" class="navbar-cta">
+                                Contactez-nous
+                            </a>
+                        @else
+                            <a href="{{ route('contact') }}" class="navbar-cta">
+                                Nous contacter
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -86,31 +169,73 @@
         <footer class="mt-10 border-t border-amber-100/70 pb-10 pt-8">
             <div class="container-page">
                 <div class="section-card px-6 py-8 sm:px-8">
-                    <div class="grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
+                    <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_0.9fr]">
                         <div>
-                            <p class="eyebrow">Lumiere, elegance, confiance</p>
-                            <h2 class="mt-3 text-4xl font-semibold text-amber-950">Chatterie des Soleils d'Orient</h2>
+                            <p class="eyebrow">Elevage responsable</p>
+                            <h2 class="mt-3 text-4xl font-semibold text-amber-950">{{ $siteName }}</h2>
                             <p class="mt-3 max-w-2xl text-sm leading-7 text-stone-600">
-                                Elevage d'Abyssins au temperament equilibre, suivi avec soin et presente dans un univers
-                                doux, solaire et raffine.
+                                {{ data_get($site, 'meta_description') }}
                             </p>
+                            <div class="mt-5 flex flex-wrap gap-3">
+                                <a href="{{ route('cats.index') }}" class="btn-secondary">Voir les disponibilites</a>
+                                <a href="{{ route('contact') }}" class="btn-primary">Preparer une adoption</a>
+                            </div>
                         </div>
 
-                        <div class="flex flex-wrap gap-4 lg:justify-end">
-                            <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
-                            <a href="{{ route('about') }}" class="footer-link">A propos</a>
-                            <a href="{{ $whatsAppLink }}" target="_blank" rel="noopener noreferrer" class="footer-link">WhatsApp</a>
+                        <div>
+                            <p class="eyebrow">Navigation</p>
+                            <div class="mt-4 grid gap-3">
+                                <a href="{{ route('home') }}" class="footer-link">Accueil</a>
+                                <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
+                                <a href="{{ route('about') }}" class="footer-link">A propos</a>
+                                <a href="{{ route('contact') }}" class="footer-link">Contact</a>
+                                <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="eyebrow">Coordonnees</p>
+                            <div class="mt-4 grid gap-3 text-sm text-stone-600">
+                                @if ($sitePhone !== '')
+                                    <a href="{{ $phoneLink ? 'tel:' . $phoneLink : '#' }}" class="footer-link">{{ $sitePhone }}</a>
+                                @endif
+                                @if ($siteEmail !== '')
+                                    <a href="mailto:{{ $siteEmail }}" class="footer-link">{{ $siteEmail }}</a>
+                                @endif
+                                @if ($address !== '')
+                                    <span>{{ $address }}</span>
+                                @endif
+                                <span>{{ data_get($site, 'hours') }}</span>
+                                @if ($instagramUrl !== '')
+                                    <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram</a>
+                                @endif
+                                @if ($facebookUrl !== '')
+                                    <a href="{{ $facebookUrl }}" target="_blank" rel="noopener noreferrer" class="footer-link">Facebook</a>
+                                @endif
+                                @if ($whatsAppLink)
+                                    <a href="{{ $whatsAppLink }}" target="_blank" rel="noopener noreferrer" class="footer-link">WhatsApp</a>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-8 flex flex-col gap-2 border-t border-amber-100 pt-5 text-xs uppercase tracking-[0.2em] text-stone-500 sm:flex-row sm:items-center sm:justify-between">
-                        <span>Elevage de chats orientaux</span>
-                        <span>Maison Soleils d'Orient</span>
+
+                    <div class="mt-8 flex flex-wrap gap-4 border-t border-amber-100 pt-5 text-xs uppercase tracking-[0.2em] text-stone-500">
+                        <span>{{ data_get($site, 'legal_status') }}</span>
+                        @if ($city !== '' || $country !== '')
+                            <span>{{ trim($city . ($country !== '' ? ', ' . $country : '')) }}</span>
+                        @endif
+                        <span>Visibilite publique: disponibles et reserves</span>
+                    </div>
+                    <div class="mt-3 flex flex-wrap gap-4 text-xs text-stone-500">
+                            <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
+                            <a href="{{ route('contact') }}" class="footer-link">Contact adoption</a>
+                            <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>
                     </div>
                 </div>
             </div>
         </footer>
 
-        @if ($whatsAppNumber)
+        @if ($whatsAppLink)
             <a
                 href="{{ $whatsAppLink }}"
                 target="_blank"
@@ -123,6 +248,33 @@
                 WhatsApp
             </a>
         @endif
+
+        <div
+            class="lightbox-root hidden"
+            data-lightbox
+            aria-hidden="true"
+        >
+            <button type="button" class="lightbox-backdrop" data-lightbox-close aria-label="Fermer la galerie"></button>
+            <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Apercu de l'image">
+                <button type="button" class="lightbox-close" data-lightbox-close aria-label="Fermer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
+                    </svg>
+                </button>
+                <figure class="lightbox-figure">
+                    <img src="" alt="" class="lightbox-image" data-lightbox-image>
+                    <figcaption class="lightbox-caption" data-lightbox-caption></figcaption>
+                </figure>
+                <div class="lightbox-actions">
+                    <button type="button" class="lightbox-nav" data-lightbox-prev aria-label="Image precedente">
+                        &larr;
+                    </button>
+                    <button type="button" class="lightbox-nav" data-lightbox-next aria-label="Image suivante">
+                        &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
 
         @stack('scripts')
     </body>

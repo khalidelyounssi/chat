@@ -12,6 +12,9 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/chats', [PublicCatController::class, 'index'])->name('cats.index');
 Route::get('/chats/{cat:slug}', [PublicCatController::class, 'show'])->name('cats.show');
 Route::get('/a-propos', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/mentions-legales', [PageController::class, 'legal'])->name('legal');
+Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');

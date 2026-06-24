@@ -15,11 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::query()->where('email', 'test@example.com')->delete();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::query()->updateOrCreate(
+            ['email' => 'admin@soleils-orient.test'],
+            [
+                'name' => 'Administration Chatterie',
+                'password' => 'admin2000',
+                'email_verified_at' => now(),
+            ]
+        );
     }
 }

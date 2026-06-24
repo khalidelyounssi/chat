@@ -13,8 +13,12 @@ class UpdateCategoryRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
+        $category = $this->route('category');
+
         $this->merge([
-            'is_active' => $this->boolean('is_active'),
+            'is_active' => $this->has('is_active')
+                ? $this->boolean('is_active')
+                : ($category?->is_active ?? false),
         ]);
     }
 
