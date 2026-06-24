@@ -252,7 +252,15 @@
         box-shadow: 0 26px 60px rgba(92, 56, 6, 0.18);
         backdrop-filter: blur(20px);
         animation: mobileMenuRise 260ms cubic-bezier(0.22, 1, 0.36, 1);
-        @apply hidden flex-col gap-4 rounded-[1.75rem] p-4 lg:mt-0 lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-end lg:border-0 lg:bg-transparent lg:p-0 lg:pt-0 lg:shadow-none;
+        @apply flex-col gap-4 rounded-[1.75rem] p-4 lg:mt-0 lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-end lg:border-0 lg:bg-transparent lg:p-0 lg:pt-0 lg:shadow-none;
+    }
+
+    .navbar-menu[aria-hidden='true'] {
+        display: none;
+    }
+
+    .navbar-menu[aria-hidden='false'] {
+        display: flex;
     }
 
     .navbar-menu::before {
