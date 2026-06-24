@@ -20,6 +20,7 @@ php artisan serve
 
 - Email: `admin@soleils-orient.test`
 - Mot de passe: `admin2000`
+- Variable admin: `ADMIN_EMAIL=admin@soleils-orient.test`
 
 ## Deploiement
 

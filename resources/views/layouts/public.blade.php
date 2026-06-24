@@ -142,9 +142,6 @@
                                     {{ $item['label'] }}
                                 </a>
                             @endforeach
-                            @auth
-                                <a href="{{ route('admin.dashboard') }}" class="nav-pill">Administration</a>
-                            @endauth
                         </nav>
 
                         @if ($whatsAppLink)

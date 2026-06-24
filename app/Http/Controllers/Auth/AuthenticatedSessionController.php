@@ -46,6 +46,17 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
+        if (! $request->user()?->isAdmin()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            RateLimiter::hit($throttleKey, 60);
+
+            throw ValidationException::withMessages([
+                'email' => __("Ces identifiants ne correspondent pas a notre enregistrement."),
+            ]);
+        }
+
         RateLimiter::clear($throttleKey);
 
         $request->session()->regenerate();

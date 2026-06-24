@@ -29,4 +29,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isAdmin(): bool
+    {
+        $adminEmails = array_map(
+            static fn (string $email): string => mb_strtolower(trim($email)),
+            (array) config('chatterie.admin.emails', [])
+        );
+
+        return in_array(mb_strtolower((string) $this->email), $adminEmails, true);
+    }
 }

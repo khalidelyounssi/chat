@@ -17,7 +17,9 @@ class AdminCatCrudTest extends TestCase
     public function test_admin_can_create_update_and_delete_a_cat_with_gallery(): void
     {
         Storage::fake('public');
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create([
+            'email' => 'admin@soleils-orient.test',
+        ]));
 
         $category = Category::factory()->create();
 

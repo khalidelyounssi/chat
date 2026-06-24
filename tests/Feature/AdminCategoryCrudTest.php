@@ -16,7 +16,9 @@ class AdminCategoryCrudTest extends TestCase
     public function test_admin_can_create_update_and_delete_a_category_with_image(): void
     {
         Storage::fake('public');
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create([
+            'email' => 'admin@soleils-orient.test',
+        ]));
 
         $storeResponse = $this->post(route('admin.categories.store'), [
             'name' => 'Chatons',

@@ -8,7 +8,7 @@ class StoreCatRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return (bool) $this->user()?->isAdmin();
     }
 
     protected function prepareForValidation(): void

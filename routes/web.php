@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function (): void {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function (): void {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('cats', AdminCatController::class);
     Route::resource('categories', AdminCategoryController::class);
