@@ -132,7 +132,7 @@
                         </button>
                     </div>
 
-                    <div id="public-site-nav" class="navbar-menu" data-mobile-nav>
+                    <div id="public-site-nav" class="navbar-menu" data-mobile-nav aria-hidden="true">
                         <nav class="navbar-links">
                             @foreach ($navItems as $item)
                                 <a
@@ -158,6 +158,13 @@
                         @endif
                     </div>
                 </div>
+                <button
+                    type="button"
+                    class="mobile-nav-backdrop hidden lg:hidden"
+                    data-mobile-nav-backdrop
+                    aria-hidden="true"
+                    tabindex="-1"
+                ></button>
             </div>
         </header>
 

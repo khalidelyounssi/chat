@@ -2,6 +2,7 @@ import './bootstrap';
 
 const setupMobileNav = () => {
     const toggles = document.querySelectorAll('[data-mobile-nav-toggle]');
+    const backdrop = document.querySelector('[data-mobile-nav-backdrop]');
 
     if (!toggles.length) {
         return;
@@ -10,6 +11,12 @@ const setupMobileNav = () => {
     const syncBodyLock = () => {
         const anyOpen = Array.from(toggles).some((toggle) => toggle.getAttribute('aria-expanded') === 'true' && window.innerWidth < 1024);
         document.body.classList.toggle('overflow-hidden', anyOpen);
+        document.body.classList.toggle('mobile-nav-open', anyOpen);
+
+        if (backdrop) {
+            backdrop.classList.toggle('hidden', !anyOpen || window.innerWidth >= 1024);
+            backdrop.setAttribute('aria-hidden', anyOpen && window.innerWidth < 1024 ? 'false' : 'true');
+        }
     };
 
     toggles.forEach((toggle) => {
@@ -22,26 +29,37 @@ const setupMobileNav = () => {
 
         const closeNav = () => {
             nav.classList.add('hidden');
+            nav.classList.remove('is-open');
+            nav.setAttribute('aria-hidden', 'true');
             toggle.setAttribute('aria-expanded', 'false');
+            toggle.setAttribute('aria-label', 'Ouvrir le menu');
             syncBodyLock();
         };
 
         const openNav = () => {
             nav.classList.remove('hidden');
+            nav.classList.add('is-open');
+            nav.setAttribute('aria-hidden', 'false');
             toggle.setAttribute('aria-expanded', 'true');
+            toggle.setAttribute('aria-label', 'Fermer le menu');
             syncBodyLock();
         };
 
         const syncDesktopState = () => {
             if (window.innerWidth >= 1024) {
                 nav.classList.remove('hidden');
+                nav.classList.remove('is-open');
+                nav.setAttribute('aria-hidden', 'false');
                 toggle.setAttribute('aria-expanded', 'false');
+                toggle.setAttribute('aria-label', 'Ouvrir le menu');
                 syncBodyLock();
                 return;
             }
 
             if (toggle.getAttribute('aria-expanded') !== 'true') {
                 nav.classList.add('hidden');
+                nav.classList.remove('is-open');
+                nav.setAttribute('aria-hidden', 'true');
             }
             syncBodyLock();
         };
@@ -61,6 +79,14 @@ const setupMobileNav = () => {
                     closeNav();
                 }
             });
+        });
+
+        backdrop?.addEventListener('click', closeNav);
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+                closeNav();
+            }
         });
 
         window.addEventListener('resize', syncDesktopState);
