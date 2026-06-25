@@ -36,6 +36,21 @@ class PageController extends Controller
         return view('legal');
     }
 
+    public function adoptionGuide(): View
+    {
+        return view('guides.adoption');
+    }
+
+    public function breedGuide(): View
+    {
+        return view('guides.breed');
+    }
+
+    public function localGuide(): View
+    {
+        return view('guides.local');
+    }
+
     public function robots(): Response
     {
         $lines = [
@@ -60,6 +75,9 @@ class PageController extends Controller
             ['loc' => route('about'), 'lastmod' => now()->toDateString(), 'priority' => '0.7'],
             ['loc' => route('contact'), 'lastmod' => now()->toDateString(), 'priority' => '0.8'],
             ['loc' => route('legal'), 'lastmod' => now()->toDateString(), 'priority' => '0.3'],
+            ['loc' => route('guides.adoption'), 'lastmod' => now()->toDateString(), 'priority' => '0.8'],
+            ['loc' => route('guides.breed'), 'lastmod' => now()->toDateString(), 'priority' => '0.7'],
+            ['loc' => route('guides.local'), 'lastmod' => now()->toDateString(), 'priority' => '0.8'],
         ]);
 
         $catUrls = Cat::query()

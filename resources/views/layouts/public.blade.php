@@ -2,12 +2,16 @@
     $site = config('chatterie.site');
     $siteName = (string) data_get($site, 'name', "Chatterie des Soleils d'Orient");
     $siteTagline = (string) data_get($site, 'tagline', "Chatterie d'Abyssins");
+    $logoPath = 'images/soleils-orient-emblem.png';
+    $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
+    $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
     $metaTitle = trim($__env->yieldContent('title', $siteName));
     $metaDescription = trim($__env->yieldContent('meta_description', (string) data_get($site, 'meta_description', '')));
     $canonicalUrl = trim($__env->yieldContent('canonical', url()->current()));
     $robots = trim($__env->yieldContent('meta_robots', 'index,follow'));
     $customOgImage = trim($__env->yieldContent('og_image', ''));
-    $defaultOgImage = asset(ltrim((string) data_get($site, 'og_image', 'images/soleils-orient-emblem.png'), '/'));
+    $defaultOgImagePath = ltrim((string) data_get($site, 'og_image', $logoPath), '/');
+    $defaultOgImage = $defaultOgImagePath === $logoPath ? $logoAsset : asset($defaultOgImagePath);
     $ogImage = $customOgImage !== '' ? $customOgImage : $defaultOgImage;
     $sitePhone = (string) data_get($site, 'phone', '');
     $phoneLink = preg_replace('/[^+\d]/', '', $sitePhone);
@@ -91,8 +95,8 @@
         <meta name="twitter:title" content="{{ $metaTitle }}">
         <meta name="twitter:description" content="{{ $metaDescription }}">
         <meta name="twitter:image" content="{{ $ogImage }}">
-        <link rel="icon" type="image/png" href="{{ asset('images/soleils-orient-emblem.png') }}">
-        <link rel="apple-touch-icon" href="{{ asset('images/soleils-orient-emblem.png') }}">
+        <link rel="icon" type="image/png" href="{{ $logoAsset }}">
+        <link rel="apple-touch-icon" href="{{ $logoAsset }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -107,7 +111,7 @@
         <div class="page-loader" data-page-loader aria-hidden="true">
             <div class="page-loader-shell">
                 <span class="page-loader-mark">
-                    <img src="{{ asset('images/soleils-orient-emblem.png') }}" alt="" class="h-full w-full rounded-full object-cover">
+                    <img src="{{ $logoAsset }}" alt="" class="h-full w-full rounded-full object-cover">
                 </span>
                 <div class="page-loader-lines">
                     <span></span>
@@ -123,7 +127,7 @@
                     <div class="flex items-center justify-between gap-4 lg:flex-1">
                         <a href="{{ route('home') }}" class="navbar-brand">
                             <span class="brand-mark h-14 w-14 shrink-0 p-1.5 sm:h-16 sm:w-16">
-                                <img src="{{ asset('images/soleils-orient-emblem.png') }}" alt="Soleils d'Orient" class="h-full w-full rounded-full object-cover">
+                                <img src="{{ $logoAsset }}" alt="Soleils d'Orient" class="h-full w-full rounded-full object-cover">
                             </span>
                             <span class="min-w-0">
                                 <span class="block truncate font-display text-2xl leading-none text-amber-900 sm:text-3xl">{{ $siteName }}</span>
@@ -210,6 +214,9 @@
                                 <a href="{{ route('about') }}" class="footer-link">A propos</a>
                                 <a href="{{ route('contact') }}" class="footer-link">Contact</a>
                                 <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>
+                                <a href="{{ route('guides.adoption') }}" class="footer-link">Guide adoption</a>
+                                <a href="{{ route('guides.breed') }}" class="footer-link">Guide race Abyssin</a>
+                                <a href="{{ route('guides.local') }}" class="footer-link">Guide local Morbihan</a>
                             </div>
                         </div>
 
@@ -249,6 +256,8 @@
                     <div class="mt-3 flex flex-wrap gap-4 text-xs text-stone-500">
                             <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
                             <a href="{{ route('contact') }}" class="footer-link">Contact adoption</a>
+                            <a href="{{ route('guides.adoption') }}" class="footer-link">Conseils adoption</a>
+                            <a href="{{ route('guides.local') }}" class="footer-link">Saint-Ave & Vannes</a>
                             <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>
                     </div>
                 </div>

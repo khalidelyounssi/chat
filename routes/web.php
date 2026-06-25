@@ -14,6 +14,9 @@ Route::get('/chats/{cat:slug}', [PublicCatController::class, 'show'])->name('cat
 Route::get('/a-propos', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/mentions-legales', [PageController::class, 'legal'])->name('legal');
+Route::get('/guides/adopter-chaton-abyssin-saint-ave', [PageController::class, 'adoptionGuide'])->name('guides.adoption');
+Route::get('/guides/caractere-chat-abyssin', [PageController::class, 'breedGuide'])->name('guides.breed');
+Route::get('/guides/elevage-abyssin-morbihan', [PageController::class, 'localGuide'])->name('guides.local');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 

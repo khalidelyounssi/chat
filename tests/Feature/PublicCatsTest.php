@@ -73,6 +73,9 @@ class PublicCatsTest extends TestCase
     {
         $this->get(route('contact'))->assertOk();
         $this->get(route('legal'))->assertOk();
+        $this->get(route('guides.adoption'))->assertOk();
+        $this->get(route('guides.breed'))->assertOk();
+        $this->get(route('guides.local'))->assertOk();
     }
 
     public function test_sitemap_lists_core_pages_and_visible_cats(): void
@@ -86,6 +89,9 @@ class PublicCatsTest extends TestCase
         $response->assertHeader('Content-Type', 'application/xml');
         $response->assertSee(route('home'), false);
         $response->assertSee(route('contact'), false);
+        $response->assertSee(route('guides.adoption'), false);
+        $response->assertSee(route('guides.breed'), false);
+        $response->assertSee(route('guides.local'), false);
         $response->assertSee(route('cats.show', ['cat' => 'naya']), false);
         $response->assertDontSee(route('cats.show', ['cat' => 'atlas']), false);
     }

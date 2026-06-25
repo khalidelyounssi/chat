@@ -7,6 +7,9 @@
 @section('content')
     @php
         $site = config('chatterie.site');
+        $logoPath = 'images/soleils-orient-emblem.png';
+        $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
+        $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
         $commitments = config('chatterie.commitments', []);
         $adoptionSteps = config('chatterie.adoption_steps', []);
         $breadcrumbSchema = [
@@ -32,7 +35,7 @@
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
         <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div class="mx-auto w-full max-w-md">
-                <img src="{{ asset('images/soleils-orient-emblem.png') }}" alt="Identite visuelle de la chatterie" class="w-full">
+                <img src="{{ $logoAsset }}" alt="Identite visuelle de la chatterie" class="w-full">
             </div>
             <div>
                 <p class="eyebrow">A propos</p>

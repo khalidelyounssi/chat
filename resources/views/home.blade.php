@@ -9,6 +9,9 @@
         use Illuminate\Support\Str;
 
         $site = config('chatterie.site');
+        $logoPath = 'images/soleils-orient-emblem.png';
+        $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
+        $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
         $commitments = config('chatterie.commitments', []);
         $faqItems = config('chatterie.seo.faq', []);
         $serviceAreas = config('chatterie.seo.service_area', []);
@@ -64,7 +67,7 @@
             <div class="relative mx-auto w-full max-w-xl">
                 <div class="luminous-panel hero-glow p-6 sm:p-8">
                     <div class="mx-auto max-w-md">
-                        <img src="{{ asset('images/soleils-orient-emblem.png') }}" alt="Embleme de la chatterie" class="hero-emblem mx-auto w-full max-w-[26rem]">
+                        <img src="{{ $logoAsset }}" alt="Embleme de la chatterie" class="hero-emblem mx-auto w-full max-w-[26rem]">
                     </div>
                     <div class="mt-6 grid gap-3 sm:grid-cols-2">
                         <div class="rounded-[1.6rem] bg-white/12 px-5 py-4 backdrop-blur-sm">
@@ -191,6 +194,50 @@
                     <p class="mt-4 text-lg font-semibold text-amber-950">{{ $commitment }}</p>
                 </article>
             @endforeach
+        </div>
+    </section>
+
+    <section class="mt-14">
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="eyebrow">Guides pratiques</p>
+                <h2 class="section-title mt-3">Des contenus utiles avant une prise de contact</h2>
+            </div>
+            <a href="{{ route('contact') }}" class="btn-ghost px-0">Parler de votre projet</a>
+        </div>
+        <div class="grid gap-6 xl:grid-cols-3">
+            <article class="section-card p-8">
+                <p class="eyebrow">Adoption locale</p>
+                <h3 class="mt-3 text-4xl font-semibold text-amber-950">Adopter un chaton Abyssin a Saint-Ave</h3>
+                <p class="subtle-text mt-4">
+                    Un guide simple pour preparer votre foyer, poser les bonnes questions et mieux comprendre
+                    ce qu'implique une adoption reussie.
+                </p>
+                <div class="mt-6">
+                    <a href="{{ route('guides.adoption') }}" class="btn-secondary">Lire le guide</a>
+                </div>
+            </article>
+            <article class="section-card p-8">
+                <p class="eyebrow">Race</p>
+                <h3 class="mt-3 text-4xl font-semibold text-amber-950">Comprendre le caractere du chat Abyssin</h3>
+                <p class="subtle-text mt-4">
+                    Un contenu utile pour savoir si l'Abyssin correspond vraiment a votre rythme de vie et
+                    au type de compagnon que vous recherchez.
+                </p>
+                <div class="mt-6">
+                    <a href="{{ route('guides.breed') }}" class="btn-secondary">Lire le guide</a>
+                </div>
+            </article>
+            <article class="section-card p-8">
+                <p class="eyebrow">Local SEO</p>
+                <h3 class="mt-3 text-4xl font-semibold text-amber-950">Elevage Abyssin dans le Morbihan</h3>
+                <p class="subtle-text mt-4">
+                    Une page locale claire pour les recherches autour de Saint-Ave, Vannes et du Morbihan.
+                </p>
+                <div class="mt-6">
+                    <a href="{{ route('guides.local') }}" class="btn-secondary">Lire le guide</a>
+                </div>
+            </article>
         </div>
     </section>
 

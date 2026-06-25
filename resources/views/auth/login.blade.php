@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
+        @php
+            $logoPath = 'images/soleils-orient-emblem.png';
+            $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
+            $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
+        @endphp
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Connexion Admin - Chatterie des Soleils d'Orient</title>
         <meta name="robots" content="noindex, nofollow">
-        <link rel="icon" type="image/png" href="{{ asset('images/soleils-orient-emblem.png') }}">
-        <link rel="apple-touch-icon" href="{{ asset('images/soleils-orient-emblem.png') }}">
+        <link rel="icon" type="image/png" href="{{ $logoAsset }}">
+        <link rel="apple-touch-icon" href="{{ $logoAsset }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +24,7 @@
             <section class="auth-card w-full max-w-md p-6 sm:p-8">
                 <div class="flex items-center gap-4">
                     <span class="brand-mark h-16 w-16 shrink-0 p-1.5">
-                        <img src="{{ asset('images/soleils-orient-emblem.png') }}" alt="Soleils d'Orient" class="h-full w-full rounded-full object-cover">
+                        <img src="{{ $logoAsset }}" alt="Soleils d'Orient" class="h-full w-full rounded-full object-cover">
                     </span>
                     <div>
                         <p class="eyebrow">Acces securise</p>

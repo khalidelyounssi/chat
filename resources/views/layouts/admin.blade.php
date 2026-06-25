@@ -1,4 +1,7 @@
 @php
+    $logoPath = 'images/soleils-orient-emblem.png';
+    $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
+    $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
     $adminNavItems = [
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'active' => request()->routeIs('admin.dashboard')],
         ['label' => 'Chats', 'route' => 'admin.cats.index', 'active' => request()->routeIs('admin.cats.*')],
@@ -13,8 +16,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>@yield('title', 'Admin - Chatterie')</title>
         <meta name="robots" content="noindex, nofollow">
-        <link rel="icon" type="image/png" href="{{ asset('images/soleils-orient-emblem.png') }}">
-        <link rel="apple-touch-icon" href="{{ asset('images/soleils-orient-emblem.png') }}">
+        <link rel="icon" type="image/png" href="{{ $logoAsset }}">
+        <link rel="apple-touch-icon" href="{{ $logoAsset }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,7 +33,7 @@
                         <div class="flex items-center justify-between gap-3">
                             <a href="{{ route('admin.dashboard') }}" class="flex min-w-0 items-center gap-3">
                                 <span class="brand-mark h-12 w-12 shrink-0 p-1">
-                                    <img src="{{ asset('images/soleils-orient-emblem.png') }}" alt="Soleils d'Orient" class="h-full w-full rounded-full object-cover">
+                                    <img src="{{ $logoAsset }}" alt="Soleils d'Orient" class="h-full w-full rounded-full object-cover">
                                 </span>
                                 <span class="min-w-0">
                                     <span class="block truncate font-display text-2xl leading-none text-amber-950">Admin</span>
