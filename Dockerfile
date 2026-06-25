@@ -79,4 +79,5 @@ COPY docker/nginx/10-select-template.envsh /docker-entrypoint.d/10-select-templa
 
 RUN rm -f public/hot \
     && mkdir -p /etc/nginx/templates \
+    && chmod +x /docker-entrypoint.d/10-select-template.envsh \
     && rm -f /etc/nginx/conf.d/default.conf.default 2>/dev/null || true
