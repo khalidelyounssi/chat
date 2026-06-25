@@ -73,7 +73,10 @@ WORKDIR /var/www
 
 COPY public ./public
 COPY --from=frontend /app/public/build ./public/build
-COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx/default.http.conf.template /etc/nginx/templates/default.http.conf.template
+COPY docker/nginx/default.https.conf.template /etc/nginx/templates/default.https.conf.template
+COPY docker/nginx/10-select-template.sh /docker-entrypoint.d/10-select-template.sh
 
 RUN rm -f public/hot \
+    && chmod +x /docker-entrypoint.d/10-select-template.sh \
     && rm -f /etc/nginx/conf.d/default.conf.default 2>/dev/null || true

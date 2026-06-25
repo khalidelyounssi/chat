@@ -29,13 +29,18 @@ services:
       context: .
       dockerfile: Dockerfile
       target: nginx-runtime
+    env_file:
+      - .env.docker
     depends_on:
       - app
     ports:
       - "${APP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
     restart: unless-stopped
     volumes:
       - app_storage:/var/www/storage:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./docker/certbot/www:/var/www/certbot:ro
 
 volumes:
   app_storage:

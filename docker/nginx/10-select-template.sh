@@ -1,0 +1,48 @@
+#!/bin/sh
+set -eu
+
+template_dir="/etc/nginx/templates"
+http_template="$template_dir/default.http.conf.template"
+https_template="$template_dir/default.https.conf.template"
+active_template="$template_dir/default.conf.template"
+
+ssl_domain="${SSL_DOMAIN:-}"
+ssl_domain_www="${SSL_DOMAIN_WWW:-}"
+
+if [ -z "$ssl_domain" ] && [ -n "${APP_URL:-}" ]; then
+    ssl_domain="$(printf '%s' "$APP_URL" | sed -E 's#^[a-zA-Z]+://##; s#/.*$##')"
+fi
+
+if [ -z "$ssl_domain" ]; then
+    export NGINX_SERVER_NAME="_"
+else
+    export NGINX_SERVER_NAME="$ssl_domain"
+
+    if [ -n "$ssl_domain_www" ]; then
+        export NGINX_SERVER_NAME="$NGINX_SERVER_NAME $ssl_domain_www"
+    fi
+fi
+
+cert_domain="$ssl_domain"
+
+if [ -z "$cert_domain" ] && [ -n "$ssl_domain_www" ]; then
+    cert_domain="$ssl_domain_www"
+fi
+
+export SSL_CERT_PATH=""
+export SSL_KEY_PATH=""
+
+if [ -n "$cert_domain" ]; then
+    cert_base="/etc/letsencrypt/live/$cert_domain"
+    cert_path="$cert_base/fullchain.pem"
+    key_path="$cert_base/privkey.pem"
+
+    if [ -f "$cert_path" ] && [ -f "$key_path" ]; then
+        export SSL_CERT_PATH="$cert_path"
+        export SSL_KEY_PATH="$key_path"
+        cp "$https_template" "$active_template"
+        exit 0
+    fi
+fi
+
+cp "$http_template" "$active_template"
