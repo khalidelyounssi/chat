@@ -1,10 +1,13 @@
-#!/bin/sh
 set -eu
 
-template_dir="/etc/nginx/templates"
-http_template="$template_dir/default.http.conf.template"
-https_template="$template_dir/default.https.conf.template"
-active_template="$template_dir/default.conf.template"
+source_template_dir="/opt/nginx/templates"
+target_template_dir="/etc/nginx/templates"
+http_template="$source_template_dir/default.http.conf.template"
+https_template="$source_template_dir/default.https.conf.template"
+active_template="$target_template_dir/default.conf.template"
+
+rm -f "$target_template_dir"/*.template
+rm -f /etc/nginx/conf.d/default.http.conf /etc/nginx/conf.d/default.https.conf
 
 ssl_domain="${SSL_DOMAIN:-}"
 ssl_domain_www="${SSL_DOMAIN_WWW:-}"
@@ -41,7 +44,7 @@ if [ -n "$cert_domain" ]; then
         export SSL_CERT_PATH="$cert_path"
         export SSL_KEY_PATH="$key_path"
         cp "$https_template" "$active_template"
-        exit 0
+        return 0
     fi
 fi
 
