@@ -14,6 +14,7 @@ Route::get('/chats/{cat:slug}', [PublicCatController::class, 'show'])->name('cat
 Route::get('/a-propos', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/mentions-legales', [PageController::class, 'legal'])->name('legal');
+Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 
 Route::middleware('guest')->group(function (): void {

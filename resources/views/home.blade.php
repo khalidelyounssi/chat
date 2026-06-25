@@ -1,7 +1,8 @@
 @extends('layouts.public')
 
-@section('title', config('chatterie.site.name'))
+@section('title', "Chatterie des Soleils d'Orient - Elevage d'Abyssins a Saint-Ave")
 @section('meta_description', config('chatterie.site.meta_description'))
+@section('canonical', route('home'))
 
 @section('content')
     @php
@@ -9,6 +10,21 @@
 
         $site = config('chatterie.site');
         $commitments = config('chatterie.commitments', []);
+        $faqItems = config('chatterie.seo.faq', []);
+        $serviceAreas = config('chatterie.seo.service_area', []);
+
+        $faqSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'mainEntity' => collect($faqItems)->map(fn (array $item): array => [
+                '@type' => 'Question',
+                'name' => $item['question'],
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $item['answer'],
+                ],
+            ])->all(),
+        ];
     @endphp
 
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
@@ -74,6 +90,11 @@
                 la qualite du lien avec les futurs adoptants. Chaque fiche publique presente l'essentiel
                 de maniere simple pour vous aider a vous projeter sereinement.
             </p>
+            @if ($serviceAreas !== [])
+                <p class="subtle-text mt-5">
+                    Zone de contact habituelle : {{ implode(', ', $serviceAreas) }}.
+                </p>
+            @endif
             <div class="mt-8 grid gap-4 sm:grid-cols-2">
                 <div class="detail-pill">
                     <p class="eyebrow">Presentation</p>
@@ -187,4 +208,25 @@
             </div>
         </div>
     </section>
+
+    @if ($faqItems !== [])
+        <section class="mt-14">
+            <div class="mb-6">
+                <p class="eyebrow">Questions frequentes</p>
+                <h2 class="section-title mt-3">Les reponses les plus utiles avant un premier echange</h2>
+            </div>
+            <div class="grid gap-4">
+                @foreach ($faqItems as $faq)
+                    <article class="section-card p-6">
+                        <h3 class="text-2xl font-semibold text-amber-950">{{ $faq['question'] }}</h3>
+                        <p class="subtle-text mt-3">{{ $faq['answer'] }}</p>
+                    </article>
+                @endforeach
+            </div>
+        </section>
+    @endif
 @endsection
+
+@push('structured_data')
+    <script type="application/ld+json">@json($faqSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+@endpush

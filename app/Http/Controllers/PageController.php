@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cat;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -33,6 +34,22 @@ class PageController extends Controller
     public function legal(): View
     {
         return view('legal');
+    }
+
+    public function robots(): Response
+    {
+        $lines = [
+            'User-agent: *',
+            'Disallow:',
+            'Disallow: /admin',
+            'Disallow: /login',
+            '',
+            'Sitemap: ' . URL::route('sitemap'),
+        ];
+
+        return response(implode("\n", $lines) . "\n", 200, [
+            'Content-Type' => 'text/plain; charset=UTF-8',
+        ]);
     }
 
     public function sitemap(): Response

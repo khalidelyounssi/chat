@@ -1,13 +1,32 @@
 @extends('layouts.public')
 
-@section('title', 'A propos - Chatterie des Soleils d\'Orient')
+@section('title', 'A propos de la chatterie d\'Abyssins - Chatterie des Soleils d\'Orient')
 @section('meta_description', 'Presentation de la chatterie, de son approche familiale, de la socialisation des Abyssins et de l\'accompagnement a l\'adoption.')
+@section('canonical', route('about'))
 
 @section('content')
     @php
         $site = config('chatterie.site');
         $commitments = config('chatterie.commitments', []);
         $adoptionSteps = config('chatterie.adoption_steps', []);
+        $breadcrumbSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Accueil',
+                    'item' => route('home'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'A propos',
+                    'item' => route('about'),
+                ],
+            ],
+        ];
     @endphp
 
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
@@ -101,3 +120,7 @@
         </div>
     </section>
 @endsection
+
+@push('structured_data')
+    <script type="application/ld+json">@json($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+@endpush

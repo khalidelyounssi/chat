@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name ${NGINX_SERVER_NAME};
+    server_name ${NGINX_WWW_HOST};
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -8,14 +8,48 @@ server {
     }
 
     location / {
-        return 301 https://$host$request_uri;
+        return 301 https://${NGINX_PRIMARY_HOST}$request_uri;
+    }
+}
+
+server {
+    listen 80;
+    server_name ${NGINX_PRIMARY_HOST};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+        try_files $uri =404;
+    }
+
+    location / {
+        return 301 https://${NGINX_PRIMARY_HOST}$request_uri;
     }
 }
 
 server {
     listen 443 ssl;
     http2 on;
-    server_name ${NGINX_SERVER_NAME};
+    server_name ${NGINX_WWW_HOST};
+
+    ssl_certificate ${SSL_CERT_PATH};
+    ssl_certificate_key ${SSL_KEY_PATH};
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_tickets off;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    location / {
+        return 301 https://${NGINX_PRIMARY_HOST}$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name ${NGINX_PRIMARY_HOST};
 
     root /var/www/public;
     index index.php index.html;
@@ -33,6 +67,11 @@ server {
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
     add_header X-Frame-Options SAMEORIGIN;
     add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy strict-origin-when-cross-origin;
+    add_header Permissions-Policy "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), hid=(), magnetometer=(), microphone=(), payment=(), usb=()" always;
+    add_header Cross-Origin-Resource-Policy same-origin;
+    add_header Cross-Origin-Opener-Policy same-origin;
+    add_header Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self'; upgrade-insecure-requests" always;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
@@ -61,6 +100,7 @@ server {
     location = /robots.txt {
         access_log off;
         log_not_found off;
+        try_files $uri /index.php?$query_string;
     }
 
     location = /index.php {

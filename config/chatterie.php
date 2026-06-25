@@ -10,6 +10,32 @@ return [
         'emails' => $adminEmails,
     ],
 
+    'seo' => [
+        'primary_domain' => env('SEO_PRIMARY_DOMAIN'),
+        'service_area' => array_values(array_filter(array_map(
+            static fn (string $value): string => trim($value),
+            explode(',', (string) env('SEO_SERVICE_AREAS', 'Saint-Ave,Vannes,Morbihan,Bretagne,France'))
+        ))),
+        'faq' => [
+            [
+                'question' => "Ou se situe la chatterie des Soleils d'Orient ?",
+                'answer' => "La chatterie est situee a Saint-Ave, dans le Morbihan, et accueille les familles sur prise de contact prealable.",
+            ],
+            [
+                'question' => "Quels chats sont visibles sur le site ?",
+                'answer' => "Le site affiche les profils disponibles et, lorsque c'est utile, certains profils reserves. Les profils vendus ne sont pas presentes au public.",
+            ],
+            [
+                'question' => "Comment se passe une premiere demande d'adoption ?",
+                'answer' => "Le premier echange sert a comprendre votre foyer, votre rythme de vie et le type de compagnon recherche afin de proposer un profil coherent.",
+            ],
+            [
+                'question' => "Peut-on contacter la chatterie par WhatsApp ?",
+                'answer' => "Oui, un lien WhatsApp est disponible sur le site lorsque le numero de contact est renseigne.",
+            ],
+        ],
+    ],
+
     'site' => [
         'name' => env('CHATTERIE_NAME', env('APP_NAME', "Chatterie des Soleils d'Orient")),
         'owner_name' => env('CHATTERIE_OWNER_NAME', 'Mme KAYADELEN Sinem'),

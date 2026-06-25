@@ -1,7 +1,8 @@
 @extends('layouts.public')
 
-@section('title', 'Contact - Chatterie des Soleils d\'Orient')
+@section('title', 'Contact adoption Abyssin - Chatterie des Soleils d\'Orient')
 @section('meta_description', 'Contactez la chatterie pour parler d\'adoption, de disponibilites, du caractere des Abyssins et de la preparation du foyer.')
+@section('canonical', route('contact'))
 
 @section('content')
     @php
@@ -16,6 +17,24 @@
         $email = (string) data_get($site, 'email', '');
         $instagramUrl = (string) config('chatterie.socials.instagram', '');
         $ownerName = (string) data_get($site, 'owner_name', '');
+        $breadcrumbSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Accueil',
+                    'item' => route('home'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'Contact',
+                    'item' => route('contact'),
+                ],
+            ],
+        ];
     @endphp
 
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
@@ -118,3 +137,7 @@
         </article>
     </section>
 @endsection
+
+@push('structured_data')
+    <script type="application/ld+json">@json($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+@endpush

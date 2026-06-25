@@ -17,6 +17,10 @@
     $address = (string) data_get($site, 'address', '');
     $instagramUrl = (string) config('chatterie.socials.instagram', '');
     $facebookUrl = (string) config('chatterie.socials.facebook', '');
+    $ownerName = (string) data_get($site, 'owner_name', '');
+    $serviceAreas = config('chatterie.seo.service_area', []);
+    $primaryDomain = (string) config('chatterie.seo.primary_domain', '');
+    $siteUrl = $primaryDomain !== '' ? 'https://' . ltrim($primaryDomain, '/') : url('/');
     $whatsAppNumber = preg_replace('/\D+/', '', (string) config('chatterie.whatsapp.number'));
     $hasWhatsApp = strlen($whatsAppNumber) >= 8;
     $message = $whatsappMessage ?? config('chatterie.whatsapp.default_text');
@@ -32,18 +36,28 @@
     $sameAs = array_values(array_filter([$instagramUrl, $facebookUrl]));
     $organizationSchema = array_filter([
         '@context' => 'https://schema.org',
-        '@type' => 'AnimalShelter',
+        '@type' => 'LocalBusiness',
+        'additionalType' => 'https://schema.org/PetStore',
         'name' => $siteName,
         'description' => $metaDescription,
-        'url' => url('/'),
+        'url' => $siteUrl,
         'image' => $defaultOgImage,
         'telephone' => $sitePhone ?: null,
         'email' => $siteEmail ?: null,
+        'founder' => $ownerName ?: null,
         'address' => $address !== '' ? [
             '@type' => 'PostalAddress',
             'streetAddress' => $address,
             'addressLocality' => $city ?: null,
             'addressCountry' => $country ?: null,
+        ] : null,
+        'areaServed' => $serviceAreas ?: null,
+        'contactPoint' => ($sitePhone !== '' || $siteEmail !== '') ? [
+            '@type' => 'ContactPoint',
+            'telephone' => $sitePhone ?: null,
+            'email' => $siteEmail ?: null,
+            'contactType' => 'customer support',
+            'availableLanguage' => ['fr'],
         ] : null,
         'sameAs' => $sameAs ?: null,
     ], fn ($value) => $value !== null && $value !== '' && $value !== []);
@@ -51,7 +65,7 @@
         '@context' => 'https://schema.org',
         '@type' => 'WebSite',
         'name' => $siteName,
-        'url' => url('/'),
+        'url' => $siteUrl,
         'description' => $metaDescription,
     ];
 @endphp
@@ -61,6 +75,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ $metaTitle }}</title>
+        <meta name="author" content="{{ $ownerName !== '' ? $ownerName : $siteName }}">
+        <meta name="theme-color" content="#fffaf2">
         <meta name="description" content="{{ $metaDescription }}">
         <meta name="robots" content="{{ $robots }}">
         <link rel="canonical" href="{{ $canonicalUrl }}">

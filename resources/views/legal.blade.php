@@ -1,7 +1,8 @@
 @extends('layouts.public')
 
-@section('title', 'Mentions legales - Chatterie des Soleils d\'Orient')
+@section('title', 'Mentions legales et hebergement - Chatterie des Soleils d\'Orient')
 @section('meta_description', 'Consultez les informations legales, de contact et de confidentialite associees au site de la chatterie.')
+@section('canonical', route('legal'))
 
 @section('meta_robots', 'index,follow')
 
@@ -15,6 +16,24 @@
         $ownerName = (string) data_get($site, 'owner_name', '');
         $hostName = (string) data_get($legal, 'host_name', '');
         $hostUrl = (string) data_get($legal, 'host_url', '');
+        $breadcrumbSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Accueil',
+                    'item' => route('home'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'Mentions legales',
+                    'item' => route('legal'),
+                ],
+            ],
+        ];
     @endphp
 
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
@@ -116,3 +135,7 @@
         </article>
     </section>
 @endsection
+
+@push('structured_data')
+    <script type="application/ld+json">@json($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+@endpush

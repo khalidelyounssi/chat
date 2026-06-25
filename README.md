@@ -28,6 +28,11 @@ php artisan serve
 - SSL automatique nginx si `SSL_DOMAIN` pointe vers un certificat Let's Encrypt disponible sur le serveur
 - Webroot ACME: `docker/certbot/www`
 
+## Exploitation
+
+- Checklist maintenance: [MAINTENANCE.md](MAINTENANCE.md)
+- Backup script: `scripts/backup-site.sh`
+
 ## Deploiement
 
 Le deploiement Docker complet se trouve dans [DEPLOYMENT.md](DEPLOYMENT.md).

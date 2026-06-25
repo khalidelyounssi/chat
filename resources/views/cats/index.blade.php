@@ -1,16 +1,55 @@
 @extends('layouts.public')
 
-@section('title', 'Nos chats - Chatterie des Soleils d\'Orient')
-@section('meta_description', 'Consultez les profils publics des Abyssins disponibles ou reserves : photos, statut, caracteristiques et informations de contact.')
+@php
+    use Illuminate\Support\Str;
+
+    $whatsAppNumber = preg_replace('/\D+/', '', (string) config('chatterie.whatsapp.number'));
+    $contactLink = strlen($whatsAppNumber) >= 8 ? 'https://wa.me/' . $whatsAppNumber : route('contact');
+    $pageTitle = $selectedCategory
+        ? 'Chats ' . $selectedCategory->name . " - Chatterie des Soleils d'Orient"
+        : "Chats Abyssins disponibles - Chatterie des Soleils d'Orient";
+    $pageDescription = $selectedCategory
+        ? "Consultez les profils Abyssins de la categorie {$selectedCategory->name} : photos, statut, caracteristiques et contact."
+        : "Consultez les profils publics des Abyssins disponibles ou reserves : photos, statut, caracteristiques et informations de contact.";
+    $canonicalUrl = $selectedCategory
+        ? route('cats.index', ['categorie' => $selectedCategory->slug])
+        : route('cats.index');
+    $breadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => 'Accueil',
+                'item' => route('home'),
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => 'Nos chats',
+                'item' => route('cats.index'),
+            ],
+        ],
+    ];
+    $itemListSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'ItemList',
+        'name' => $pageTitle,
+        'itemListElement' => $cats->values()->map(fn ($cat, $index): array => [
+            '@type' => 'ListItem',
+            'position' => $cats->firstItem() + $index,
+            'url' => route('cats.show', $cat),
+            'name' => $cat->name,
+        ])->all(),
+    ];
+@endphp
+
+@section('title', $pageTitle)
+@section('meta_description', $pageDescription)
+@section('canonical', $canonicalUrl)
 
 @section('content')
-    @php
-        use Illuminate\Support\Str;
-
-        $whatsAppNumber = preg_replace('/\D+/', '', (string) config('chatterie.whatsapp.number'));
-        $contactLink = strlen($whatsAppNumber) >= 8 ? 'https://wa.me/' . $whatsAppNumber : route('contact');
-    @endphp
-
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
         <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
             <div>
@@ -140,3 +179,8 @@
         </div>
     </section>
 @endsection
+
+@push('structured_data')
+    <script type="application/ld+json">@json($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+    <script type="application/ld+json">@json($itemListSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+@endpush

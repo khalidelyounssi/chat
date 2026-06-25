@@ -1,7 +1,9 @@
 @extends('layouts.public')
 
-@section('title', $cat->name . " - Chatterie des Soleils d'Orient")
+@section('title', $cat->name . " - Abyssin " . ($cat->status === 'available' ? 'disponible' : 'reserve') . " - Chatterie des Soleils d'Orient")
 @section('meta_description', $cat->description ? \Illuminate\Support\Str::limit($cat->description, 150) : "Decouvrez le profil de {$cat->name}, Abyssin presente par la chatterie.")
+@section('canonical', route('cats.show', $cat))
+@section('og_image', $cat->image ? asset('storage/' . $cat->image) : '')
 
 @section('content')
     @php
@@ -12,6 +14,38 @@
             ? 'https://wa.me/' . $whatsAppNumber . '?text=' . rawurlencode($whatsappMessage)
             : route('contact');
         $adoptionSteps = config('chatterie.adoption_steps', []);
+        $breadcrumbSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Accueil',
+                    'item' => route('home'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'Nos chats',
+                    'item' => route('cats.index'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => $cat->name,
+                    'item' => route('cats.show', $cat),
+                ],
+            ],
+        ];
+        $profileSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'WebPage',
+            'name' => $cat->name,
+            'url' => route('cats.show', $cat),
+            'description' => $cat->description ? Str::limit($cat->description, 150) : "Profil de {$cat->name}",
+            'primaryImageOfPage' => $cat->image ? asset('storage/' . $cat->image) : null,
+        ];
     @endphp
 
     <a href="{{ route('cats.index') }}" class="btn-ghost mb-5 px-0">&larr; Retour a la liste</a>
@@ -201,3 +235,8 @@
         </section>
     @endif
 @endsection
+
+@push('structured_data')
+    <script type="application/ld+json">@json($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+    <script type="application/ld+json">@json(array_filter($profileSchema), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+@endpush

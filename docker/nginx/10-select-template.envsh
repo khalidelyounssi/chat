@@ -16,6 +16,9 @@ if [ -z "$ssl_domain" ] && [ -n "${APP_URL:-}" ]; then
     ssl_domain="$(printf '%s' "$APP_URL" | sed -E 's#^[a-zA-Z]+://##; s#/.*$##')"
 fi
 
+export NGINX_PRIMARY_HOST="${ssl_domain:-_}"
+export NGINX_WWW_HOST="${ssl_domain_www:-www-disabled.invalid}"
+
 if [ -z "$ssl_domain" ]; then
     export NGINX_SERVER_NAME="_"
 else

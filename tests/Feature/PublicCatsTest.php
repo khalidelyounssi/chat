@@ -89,4 +89,14 @@ class PublicCatsTest extends TestCase
         $response->assertSee(route('cats.show', ['cat' => 'naya']), false);
         $response->assertDontSee(route('cats.show', ['cat' => 'atlas']), false);
     }
+
+    public function test_robots_file_exposes_restrictions_and_sitemap(): void
+    {
+        $response = $this->get(route('robots'));
+
+        $response->assertOk();
+        $response->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
+        $response->assertSee('Disallow: /admin');
+        $response->assertSee(route('sitemap'));
+    }
 }
