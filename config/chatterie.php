@@ -19,19 +19,19 @@ return [
         'faq' => [
             [
                 'question' => "Ou se situe la chatterie des Soleils d'Orient ?",
-                'answer' => "La chatterie est situee a Saint-Ave, dans le Morbihan, et accueille les familles sur prise de contact prealable.",
+                'answer' => 'La chatterie est situee a Saint-Ave, dans le Morbihan, et accueille les familles sur prise de contact prealable.',
             ],
             [
-                'question' => "Quels chats sont visibles sur le site ?",
+                'question' => 'Quels chats sont visibles sur le site ?',
                 'answer' => "Le site affiche les profils disponibles et, lorsque c'est utile, certains profils reserves. Les profils vendus ne sont pas presentes au public.",
             ],
             [
                 'question' => "Comment se passe une premiere demande d'adoption ?",
-                'answer' => "Le premier echange sert a comprendre votre foyer, votre rythme de vie et le type de compagnon recherche afin de proposer un profil coherent.",
+                'answer' => 'Le premier echange sert a comprendre votre foyer, votre rythme de vie et le type de compagnon recherche afin de proposer un profil coherent.',
             ],
             [
-                'question' => "Peut-on contacter la chatterie par WhatsApp ?",
-                'answer' => "Oui, un lien WhatsApp est disponible sur le site lorsque le numero de contact est renseigne.",
+                'question' => 'Peut-on contacter la chatterie par WhatsApp ?',
+                'answer' => 'Oui, un lien WhatsApp est disponible sur le site lorsque le numero de contact est renseigne.',
             ],
         ],
     ],
@@ -41,16 +41,17 @@ return [
         'owner_name' => env('CHATTERIE_OWNER_NAME', 'Mme KAYADELEN Sinem'),
         'tagline' => env('CHATTERIE_TAGLINE', "Chatterie d'Abyssins"),
         'city' => env('CHATTERIE_CITY', 'Saint-Ave'),
+        'market_city' => env('CHATTERIE_MARKET_CITY', 'Vannes'),
         'country' => env('CHATTERIE_COUNTRY', 'France'),
         'address' => env('CHATTERIE_ADDRESS', '16B Rue Joseph le Brix, 56890 Saint-Ave'),
         'phone' => env('CHATTERIE_PHONE', '06.51.09.03.36'),
         'email' => env('CHATTERIE_EMAIL', env('MAIL_FROM_ADDRESS', 'chatteriedessoleilsdorient@outlook.fr')),
         'hours' => env('CHATTERIE_HOURS', 'Du lundi au samedi, de 10h00 a 18h00'),
         'legal_name' => env('CHATTERIE_LEGAL_NAME', "Chatterie des Soleils d'Orient"),
-        'legal_status' => env('CHATTERIE_LEGAL_STATUS', "Elevage de chats abyssins"),
+        'legal_status' => env('CHATTERIE_LEGAL_STATUS', 'Elevage de chats abyssins'),
         'meta_description' => env(
             'CHATTERIE_META_DESCRIPTION',
-            "Chatterie des Soleils d'Orient a Saint-Ave : elevage de chats abyssins, accompagnement a l'adoption, disponibilites claires et contact direct avec la proprietaire."
+            "Chatterie des Soleils d'Orient a Saint-Ave, proche de Vannes : elevage de chats abyssins, accompagnement a l'adoption, disponibilites claires et contact direct avec la proprietaire."
         ),
         'og_image' => env('CHATTERIE_OG_IMAGE', 'images/soleils-orient-emblem.png'),
     ],

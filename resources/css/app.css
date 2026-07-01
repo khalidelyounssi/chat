@@ -491,6 +491,65 @@
         @apply rounded-[1.35rem] px-5 py-4;
     }
 
+    .review-summary {
+        @apply grid min-w-32 justify-items-end gap-1;
+    }
+
+    .review-card {
+        border: 1px solid rgba(174, 128, 36, 0.12);
+        background: rgba(255, 252, 247, 0.82);
+        box-shadow: 0 12px 28px rgba(113, 72, 8, 0.06);
+        @apply rounded-[1.5rem] p-5;
+    }
+
+    .review-stars {
+        color: #c89322;
+        letter-spacing: 0.08em;
+        @apply inline-flex text-sm;
+    }
+
+    .review-star-muted {
+        color: rgba(168, 147, 117, 0.3);
+    }
+
+    .rating-input {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        gap: 0.2rem;
+    }
+
+    .rating-input input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        opacity: 0;
+    }
+
+    .rating-input label {
+        color: rgba(168, 147, 117, 0.3);
+        cursor: pointer;
+        font-size: 2rem;
+        line-height: 1;
+        transition: color 160ms ease, transform 160ms ease;
+    }
+
+    .rating-input label:hover,
+    .rating-input label:hover ~ label,
+    .rating-input input:checked ~ label {
+        color: #c89322;
+    }
+
+    .rating-input input:focus-visible + label {
+        border-radius: 0.25rem;
+        outline: 3px solid rgba(248, 211, 128, 0.65);
+        outline-offset: 3px;
+    }
+
+    .rating-input label:hover {
+        transform: translateY(-2px);
+    }
+
     .cat-card {
         position: relative;
         border: 1px solid rgba(174, 128, 36, 0.12);

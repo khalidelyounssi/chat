@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', "Chatterie des Soleils d'Orient - Elevage d'Abyssins a Saint-Ave")
+@section('title', "Chatterie des Soleils d'Orient - Elevage d'Abyssins proche de Vannes")
 @section('meta_description', config('chatterie.site.meta_description'))
 @section('canonical', route('home'))
 
@@ -12,6 +12,7 @@
         $logoPath = 'images/soleils-orient-emblem.png';
         $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
         $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
+        $marketCity = (string) data_get($site, 'market_city', 'Vannes');
         $commitments = config('chatterie.commitments', []);
         $faqItems = config('chatterie.seo.faq', []);
         $serviceAreas = config('chatterie.seo.service_area', []);
@@ -33,9 +34,11 @@
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
         <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div class="relative z-10">
-                <p class="eyebrow">{{ data_get($site, 'city') }} · {{ data_get($site, 'country') }}</p>
+                <p class="eyebrow">{{ $marketCity }} · {{ data_get($site, 'country') }}</p>
                 <h1 class="page-title mt-5">
-                    Des Abyssins eleves avec
+                    Des Abyssins eleves pres de
+                    <span class="text-amber-700">{{ $marketCity }}</span>,
+                    avec
                     <span class="text-amber-700">clarte, douceur et exigence</span>
                 </h1>
                 <p class="body-copy mt-6 max-w-2xl">
@@ -208,7 +211,7 @@
         <div class="grid gap-6 xl:grid-cols-3">
             <article class="section-card p-8">
                 <p class="eyebrow">Adoption locale</p>
-                <h3 class="mt-3 text-4xl font-semibold text-amber-950">Adopter un chaton Abyssin a Saint-Ave</h3>
+                    <h3 class="mt-3 text-4xl font-semibold text-amber-950">Adopter un chaton Abyssin proche de Vannes</h3>
                 <p class="subtle-text mt-4">
                     Un guide simple pour preparer votre foyer, poser les bonnes questions et mieux comprendre
                     ce qu'implique une adoption reussie.

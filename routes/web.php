@@ -3,15 +3,20 @@
 use App\Http\Controllers\Admin\CatController as AdminCatController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PublicCatController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/chats', [PublicCatController::class, 'index'])->name('cats.index');
 Route::get('/chats/{cat:slug}', [PublicCatController::class, 'show'])->name('cats.show');
 Route::get('/a-propos', [PageController::class, 'about'])->name('about');
+Route::post('/a-propos/avis', [ReviewController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('reviews.store');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/mentions-legales', [PageController::class, 'legal'])->name('legal');
 Route::get('/guides/adopter-chaton-abyssin-saint-ave', [PageController::class, 'adoptionGuide'])->name('guides.adoption');
@@ -33,4 +38,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('cats', AdminCatController::class);
     Route::resource('categories', AdminCategoryController::class);
+    Route::get('reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+    Route::patch('reviews/{review}', [AdminReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
 });

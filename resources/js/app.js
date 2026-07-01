@@ -8,6 +8,14 @@ const setupMobileNav = () => {
         return;
     }
 
+    const syncToggleIcons = (toggle, isOpen) => {
+        const openIcon = toggle.querySelector('.menu-open-icon');
+        const closeIcon = toggle.querySelector('.menu-close-icon');
+
+        openIcon?.classList.toggle('hidden', isOpen);
+        closeIcon?.classList.toggle('hidden', !isOpen);
+    };
+
     const syncBodyLock = () => {
         const anyOpen = Array.from(toggles).some((toggle) => toggle.getAttribute('aria-expanded') === 'true' && window.innerWidth < 1024);
         document.body.classList.toggle('overflow-hidden', anyOpen);
@@ -33,6 +41,7 @@ const setupMobileNav = () => {
             nav.setAttribute('aria-hidden', 'true');
             toggle.setAttribute('aria-expanded', 'false');
             toggle.setAttribute('aria-label', 'Ouvrir le menu');
+            syncToggleIcons(toggle, false);
             syncBodyLock();
         };
 
@@ -42,6 +51,7 @@ const setupMobileNav = () => {
             nav.setAttribute('aria-hidden', 'false');
             toggle.setAttribute('aria-expanded', 'true');
             toggle.setAttribute('aria-label', 'Fermer le menu');
+            syncToggleIcons(toggle, true);
             syncBodyLock();
         };
 
@@ -52,6 +62,7 @@ const setupMobileNav = () => {
                 nav.setAttribute('aria-hidden', 'false');
                 toggle.setAttribute('aria-expanded', 'false');
                 toggle.setAttribute('aria-label', 'Ouvrir le menu');
+                syncToggleIcons(toggle, false);
                 syncBodyLock();
                 return;
             }
@@ -60,6 +71,7 @@ const setupMobileNav = () => {
                 nav.classList.add('hidden');
                 nav.classList.remove('is-open');
                 nav.setAttribute('aria-hidden', 'true');
+                syncToggleIcons(toggle, false);
             }
             syncBodyLock();
         };
@@ -95,72 +107,7 @@ const setupMobileNav = () => {
 };
 
 const setupMotionExperience = () => {
-    if (!document.body.classList.contains('site-shell')) {
-        return;
-    }
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        return;
-    }
-
-    const targets = Array.from(document.querySelectorAll([
-        'main > section',
-        'main .section-card',
-        'main .luminous-panel',
-        'main .cat-card',
-        'main .metric-card',
-        'main .detail-pill',
-        'main .gallery-tile',
-    ].join(', ')));
-
-    if (!targets.length) {
-        return;
-    }
-
-    targets.forEach((target) => {
-        target.setAttribute('data-reveal', '');
-    });
-
-    targets.forEach((target) => {
-        const siblings = Array.from(target.parentElement?.children ?? []).filter((element) => element.hasAttribute('data-reveal'));
-        const revealIndex = Math.max(siblings.indexOf(target), 0);
-        target.style.setProperty('--reveal-delay', `${Math.min(revealIndex * 80, 280)}ms`);
-    });
-
-    const showTarget = (target) => {
-        target.classList.add('is-visible');
-    };
-
-    if (!('IntersectionObserver' in window)) {
-        targets.forEach(showTarget);
-        document.body.classList.add('motion-ready');
-        return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (!entry.isIntersecting) {
-                return;
-            }
-
-            showTarget(entry.target);
-            observer.unobserve(entry.target);
-        });
-    }, {
-        threshold: 0.14,
-        rootMargin: '0px 0px -8% 0px',
-    });
-
-    targets.forEach((target, index) => {
-        if (index < 3) {
-            showTarget(target);
-            return;
-        }
-
-        observer.observe(target);
-    });
-
-    document.body.classList.add('motion-ready');
+    document.body.classList.remove('motion-ready');
 };
 
 const setupPageLoader = () => {

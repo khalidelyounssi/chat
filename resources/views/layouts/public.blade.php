@@ -256,6 +256,7 @@
                     <div class="mt-3 flex flex-wrap gap-4 text-xs text-stone-500">
                             <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
                             <a href="{{ route('contact') }}" class="footer-link">Contact adoption</a>
+                            <a href="{{ route('about') }}#avis" class="footer-link">Laisser un avis</a>
                             <a href="{{ route('guides.adoption') }}" class="footer-link">Conseils adoption</a>
                             <a href="{{ route('guides.local') }}" class="footer-link">Saint-Ave & Vannes</a>
                             <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>

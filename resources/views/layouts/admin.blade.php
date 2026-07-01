@@ -6,6 +6,7 @@
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'active' => request()->routeIs('admin.dashboard')],
         ['label' => 'Chats', 'route' => 'admin.cats.index', 'active' => request()->routeIs('admin.cats.*')],
         ['label' => 'Categories', 'route' => 'admin.categories.index', 'active' => request()->routeIs('admin.categories.*')],
+        ['label' => 'Avis', 'route' => 'admin.reviews.index', 'active' => request()->routeIs('admin.reviews.*')],
         ['label' => 'Voir le site', 'route' => 'home', 'active' => false],
     ];
 @endphp

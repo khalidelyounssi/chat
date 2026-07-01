@@ -30,6 +30,12 @@
             <p class="metric-value">{{ $stats['categories_total'] }}</p>
             <p class="subtle-text mt-3">Nombre de categories configurees.</p>
         </div>
+        <div class="admin-stat-card">
+            <p class="eyebrow">Avis en attente</p>
+            <p class="metric-value">{{ $stats['reviews_pending'] }}</p>
+            <p class="subtle-text mt-3">Commentaires a verifier avant publication.</p>
+            <a href="{{ route('admin.reviews.index') }}" class="btn-secondary mt-4">Gerer les avis</a>
+        </div>
         <div class="luminous-panel p-6">
             <p class="text-sm uppercase tracking-[0.24em] text-white/65">Actives</p>
             <p class="mt-3 font-display text-6xl text-white">{{ $stats['categories_active'] }}</p>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Cat;
 use App\Models\Category;
+use App\Models\Review;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -18,6 +19,7 @@ class DashboardController extends Controller
             'cats_sold' => Cat::query()->where('status', 'sold')->count(),
             'categories_total' => Category::query()->count(),
             'categories_active' => Category::query()->where('is_active', true)->count(),
+            'reviews_pending' => Review::query()->where('is_approved', false)->count(),
         ];
 
         $latestCats = Cat::query()

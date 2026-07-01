@@ -91,7 +91,7 @@
 
                     <div class="detail-pill">
                         <p class="eyebrow">Localisation</p>
-                        <p class="mt-2 text-lg font-semibold text-amber-950">{{ data_get($site, 'address') }}</p>
+                        <p class="mt-2 text-lg font-semibold text-amber-950">{{ data_get($site, 'city') }}</p>
                         <p class="subtle-text mt-2">{{ data_get($site, 'hours') }}</p>
                     </div>
 

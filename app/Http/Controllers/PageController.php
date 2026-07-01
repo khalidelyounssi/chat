@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cat;
+use App\Models\Review;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
@@ -23,7 +24,18 @@ class PageController extends Controller
 
     public function about(): View
     {
-        return view('about');
+        $reviews = Review::query()
+            ->approved()
+            ->latest('approved_at')
+            ->take(9)
+            ->get();
+
+        $reviewCount = Review::query()->approved()->count();
+        $averageRating = $reviewCount > 0
+            ? round((float) Review::query()->approved()->avg('rating'), 1)
+            : null;
+
+        return view('about', compact('reviews', 'reviewCount', 'averageRating'));
     }
 
     public function contact(): View
@@ -59,10 +71,10 @@ class PageController extends Controller
             'Disallow: /admin',
             'Disallow: /login',
             '',
-            'Sitemap: ' . URL::route('sitemap'),
+            'Sitemap: '.URL::route('sitemap'),
         ];
 
-        return response(implode("\n", $lines) . "\n", 200, [
+        return response(implode("\n", $lines)."\n", 200, [
             'Content-Type' => 'text/plain; charset=UTF-8',
         ]);
     }
