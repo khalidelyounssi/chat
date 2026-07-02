@@ -43,7 +43,6 @@ return [
         'city' => env('CHATTERIE_CITY', 'Saint-Ave'),
         'market_city' => env('CHATTERIE_MARKET_CITY', 'Vannes'),
         'country' => env('CHATTERIE_COUNTRY', 'France'),
-        'address' => env('CHATTERIE_ADDRESS', '16B Rue Joseph le Brix, 56890 Saint-Ave'),
         'phone' => env('CHATTERIE_PHONE', '06.51.09.03.36'),
         'email' => env('CHATTERIE_EMAIL', env('MAIL_FROM_ADDRESS', 'chatteriedessoleilsdorient@outlook.fr')),
         'hours' => env('CHATTERIE_HOURS', 'Du lundi au samedi, de 10h00 a 18h00'),

@@ -19,13 +19,13 @@ class ReviewFeatureTest extends TestCase
             'comment' => 'Une tres belle experience avec la chatterie.',
         ]);
 
-        $response->assertRedirect(route('about').'#avis');
+        $response->assertRedirect(route('reviews').'#laisser-un-avis');
         $this->assertDatabaseHas('reviews', [
             'name' => 'Sophie',
             'rating' => 5,
             'is_approved' => false,
         ]);
-        $this->get(route('about'))->assertDontSee('Une tres belle experience');
+        $this->get(route('reviews'))->assertDontSee('Une tres belle experience');
     }
 
     public function test_admin_can_publish_and_hide_a_review(): void
@@ -44,7 +44,7 @@ class ReviewFeatureTest extends TestCase
         $review->refresh();
         $this->assertTrue($review->is_approved);
         $this->assertNotNull($review->approved_at);
-        $this->get(route('about'))->assertSee('Accueil chaleureux');
+        $this->get(route('reviews'))->assertSee('Accueil chaleureux');
 
         $this->patch(route('admin.reviews.update', $review), ['is_approved' => false]);
         $this->assertFalse($review->fresh()->is_approved);

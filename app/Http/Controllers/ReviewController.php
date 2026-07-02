@@ -12,7 +12,7 @@ class ReviewController extends Controller
     {
         Review::create($request->safe()->only(['name', 'rating', 'comment']));
 
-        return redirect(route('about').'#avis')
+        return redirect(route('reviews').'#laisser-un-avis')
             ->with('success', 'Merci pour votre avis. Il sera affiche apres validation par la chatterie.');
     }
 }

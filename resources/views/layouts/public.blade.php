@@ -16,9 +16,6 @@
     $sitePhone = (string) data_get($site, 'phone', '');
     $phoneLink = preg_replace('/[^+\d]/', '', $sitePhone);
     $siteEmail = (string) data_get($site, 'email', '');
-    $city = (string) data_get($site, 'city', '');
-    $country = (string) data_get($site, 'country', '');
-    $address = (string) data_get($site, 'address', '');
     $instagramUrl = (string) config('chatterie.socials.instagram', '');
     $facebookUrl = (string) config('chatterie.socials.facebook', '');
     $ownerName = (string) data_get($site, 'owner_name', '');
@@ -35,6 +32,7 @@
         ['label' => 'Accueil', 'route' => 'home', 'active' => request()->routeIs('home')],
         ['label' => 'Nos chats', 'route' => 'cats.index', 'active' => request()->routeIs('cats.*')],
         ['label' => 'A propos', 'route' => 'about', 'active' => request()->routeIs('about')],
+        ['label' => 'Avis', 'route' => 'reviews', 'active' => request()->routeIs('reviews')],
         ['label' => 'Contact', 'route' => 'contact', 'active' => request()->routeIs('contact')],
     ];
     $sameAs = array_values(array_filter([$instagramUrl, $facebookUrl]));
@@ -49,12 +47,6 @@
         'telephone' => $sitePhone ?: null,
         'email' => $siteEmail ?: null,
         'founder' => $ownerName ?: null,
-        'address' => $address !== '' ? [
-            '@type' => 'PostalAddress',
-            'streetAddress' => $address,
-            'addressLocality' => $city ?: null,
-            'addressCountry' => $country ?: null,
-        ] : null,
         'areaServed' => $serviceAreas ?: null,
         'contactPoint' => ($sitePhone !== '' || $siteEmail !== '') ? [
             '@type' => 'ContactPoint',
@@ -212,6 +204,7 @@
                                 <a href="{{ route('home') }}" class="footer-link">Accueil</a>
                                 <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
                                 <a href="{{ route('about') }}" class="footer-link">A propos</a>
+                                <a href="{{ route('reviews') }}" class="footer-link">Avis</a>
                                 <a href="{{ route('contact') }}" class="footer-link">Contact</a>
                                 <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>
                                 <a href="{{ route('guides.adoption') }}" class="footer-link">Guide adoption</a>
@@ -229,9 +222,6 @@
                                 @if ($siteEmail !== '')
                                     <a href="mailto:{{ $siteEmail }}" class="footer-link">{{ $siteEmail }}</a>
                                 @endif
-                                @if ($address !== '')
-                                    <span>{{ $address }}</span>
-                                @endif
                                 <span>{{ data_get($site, 'hours') }}</span>
                                 @if ($instagramUrl !== '')
                                     <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram</a>
@@ -248,15 +238,12 @@
 
                     <div class="mt-8 flex flex-wrap gap-4 border-t border-amber-100 pt-5 text-xs uppercase tracking-[0.2em] text-stone-500">
                         <span>{{ data_get($site, 'legal_status') }}</span>
-                        @if ($city !== '' || $country !== '')
-                            <span>{{ trim($city . ($country !== '' ? ', ' . $country : '')) }}</span>
-                        @endif
                         <span>Visibilite publique: disponibles et reserves</span>
                     </div>
                     <div class="mt-3 flex flex-wrap gap-4 text-xs text-stone-500">
                             <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
                             <a href="{{ route('contact') }}" class="footer-link">Contact adoption</a>
-                            <a href="{{ route('about') }}#avis" class="footer-link">Laisser un avis</a>
+                            <a href="{{ route('reviews') }}" class="footer-link">Laisser un avis</a>
                             <a href="{{ route('guides.adoption') }}" class="footer-link">Conseils adoption</a>
                             <a href="{{ route('guides.local') }}" class="footer-link">Saint-Ave & Vannes</a>
                             <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>

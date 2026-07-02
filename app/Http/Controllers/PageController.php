@@ -24,6 +24,11 @@ class PageController extends Controller
 
     public function about(): View
     {
+        return view('about');
+    }
+
+    public function reviews(): View
+    {
         $reviews = Review::query()
             ->approved()
             ->latest('approved_at')
@@ -35,7 +40,7 @@ class PageController extends Controller
             ? round((float) Review::query()->approved()->avg('rating'), 1)
             : null;
 
-        return view('about', compact('reviews', 'reviewCount', 'averageRating'));
+        return view('reviews', compact('reviews', 'reviewCount', 'averageRating'));
     }
 
     public function contact(): View
@@ -85,6 +90,7 @@ class PageController extends Controller
             ['loc' => route('home'), 'lastmod' => now()->toDateString(), 'priority' => '1.0'],
             ['loc' => route('cats.index'), 'lastmod' => now()->toDateString(), 'priority' => '0.9'],
             ['loc' => route('about'), 'lastmod' => now()->toDateString(), 'priority' => '0.7'],
+            ['loc' => route('reviews'), 'lastmod' => now()->toDateString(), 'priority' => '0.7'],
             ['loc' => route('contact'), 'lastmod' => now()->toDateString(), 'priority' => '0.8'],
             ['loc' => route('legal'), 'lastmod' => now()->toDateString(), 'priority' => '0.3'],
             ['loc' => route('guides.adoption'), 'lastmod' => now()->toDateString(), 'priority' => '0.8'],

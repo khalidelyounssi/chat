@@ -14,7 +14,8 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/chats', [PublicCatController::class, 'index'])->name('cats.index');
 Route::get('/chats/{cat:slug}', [PublicCatController::class, 'show'])->name('cats.show');
 Route::get('/a-propos', [PageController::class, 'about'])->name('about');
-Route::post('/a-propos/avis', [ReviewController::class, 'store'])
+Route::get('/avis', [PageController::class, 'reviews'])->name('reviews');
+Route::post('/avis', [ReviewController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('reviews.store');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');

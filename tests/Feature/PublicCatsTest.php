@@ -72,6 +72,7 @@ class PublicCatsTest extends TestCase
     public function test_contact_and_legal_pages_are_available(): void
     {
         $this->get(route('contact'))->assertOk();
+        $this->get(route('reviews'))->assertOk();
         $this->get(route('legal'))->assertOk();
         $this->get(route('guides.adoption'))->assertOk();
         $this->get(route('guides.breed'))->assertOk();
@@ -89,6 +90,7 @@ class PublicCatsTest extends TestCase
         $response->assertHeader('Content-Type', 'application/xml');
         $response->assertSee(route('home'), false);
         $response->assertSee(route('contact'), false);
+        $response->assertSee(route('reviews'), false);
         $response->assertSee(route('guides.adoption'), false);
         $response->assertSee(route('guides.breed'), false);
         $response->assertSee(route('guides.local'), false);

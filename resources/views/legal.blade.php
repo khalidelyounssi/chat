@@ -65,10 +65,6 @@
                     <p class="eyebrow">Activite</p>
                     <p class="mt-2 text-lg font-semibold text-amber-950">{{ data_get($site, 'legal_status') }}</p>
                 </div>
-                <div class="detail-pill">
-                    <p class="eyebrow">Adresse</p>
-                    <p class="mt-2 text-lg font-semibold text-amber-950">{{ data_get($site, 'address') }}</p>
-                </div>
                 @if ($phone !== '')
                     <div class="detail-pill">
                         <p class="eyebrow">Telephone</p>
