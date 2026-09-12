@@ -26,7 +26,7 @@
 
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    imagePreview.innerHTML = `<img src="${e.target.result}" class="h-full w-full object-cover" alt="Apercu">`;
+                    imagePreview.innerHTML = `<img src="${e.target.result}" class="h-full w-full object-cover" alt="Aperçu">`;
                 };
                 reader.readAsDataURL(file);
             });
@@ -41,7 +41,7 @@
                         const img = document.createElement('img');
                         img.src = e.target.result;
                         img.className = 'h-20 w-full rounded-lg object-cover';
-                        img.alt = 'Apercu galerie';
+                        img.alt = 'Aperçu de la galerie';
                         galleryPreview.appendChild(img);
                     };
                     reader.readAsDataURL(file);

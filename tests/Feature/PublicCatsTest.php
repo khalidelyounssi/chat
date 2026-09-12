@@ -69,6 +69,29 @@ class PublicCatsTest extends TestCase
         $this->assertSame($visibleCat->slug, 'lina');
     }
 
+    public function test_breeder_cats_have_a_separate_public_tab(): void
+    {
+        Cat::factory()->create(['name' => 'Maya', 'status' => 'sold', 'is_breeder' => true]);
+        Cat::factory()->create(['name' => 'Nala', 'status' => 'available', 'is_breeder' => false]);
+
+        $this->get(route('cats.index'))
+            ->assertOk()
+            ->assertSee('Nala')
+            ->assertDontSee('Maya');
+
+        $this->get(route('cats.index', ['type' => 'chatterie']))
+            ->assertOk()
+            ->assertSee('Maya')
+            ->assertDontSee('Nala');
+    }
+
+    public function test_breeder_cat_profile_is_public_even_when_not_for_sale(): void
+    {
+        $cat = Cat::factory()->create(['slug' => 'maya', 'status' => 'sold', 'is_breeder' => true]);
+
+        $this->get(route('cats.show', $cat))->assertOk();
+    }
+
     public function test_contact_and_legal_pages_are_available(): void
     {
         $this->get(route('contact'))->assertOk();
@@ -83,6 +106,7 @@ class PublicCatsTest extends TestCase
     {
         Cat::factory()->create(['name' => 'Naya', 'slug' => 'naya', 'status' => 'available']);
         Cat::factory()->create(['name' => 'Atlas', 'slug' => 'atlas', 'status' => 'sold']);
+        Cat::factory()->create(['name' => 'Maya', 'slug' => 'maya', 'status' => 'sold', 'is_breeder' => true]);
 
         $response = $this->get(route('sitemap'));
 
@@ -95,6 +119,7 @@ class PublicCatsTest extends TestCase
         $response->assertSee(route('guides.breed'), false);
         $response->assertSee(route('guides.local'), false);
         $response->assertSee(route('cats.show', ['cat' => 'naya']), false);
+        $response->assertSee(route('cats.show', ['cat' => 'maya']), false);
         $response->assertDontSee(route('cats.show', ['cat' => 'atlas']), false);
     }
 

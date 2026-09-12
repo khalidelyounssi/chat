@@ -40,7 +40,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.categories.index')
-            ->with('success', 'Categorie creee avec succès.');
+            ->with('success', 'Catégorie créée avec succès.');
     }
 
     public function show(Category $category): View
@@ -72,7 +72,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.categories.index')
-            ->with('success', 'Categorie mise a jour avec succès.');
+            ->with('success', 'Catégorie mise à jour avec succès.');
     }
 
     public function destroy(Category $category): RedirectResponse
@@ -85,6 +85,6 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.categories.index')
-            ->with('success', 'Categorie supprimee avec succès.');
+            ->with('success', 'Catégorie supprimée avec succès.');
     }
 }

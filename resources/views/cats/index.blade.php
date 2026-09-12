@@ -5,15 +5,22 @@
 
     $whatsAppNumber = preg_replace('/\D+/', '', (string) config('chatterie.whatsapp.number'));
     $contactLink = strlen($whatsAppNumber) >= 8 ? 'https://wa.me/' . $whatsAppNumber : route('contact');
-    $pageTitle = $selectedCategory
+    $isBreederTab = $selectedType === 'chatterie';
+    $pageTitle = $isBreederTab
+        ? "Chats de la chatterie - Chatterie des Soleils d'Orient"
+        : ($selectedCategory
         ? 'Chats ' . $selectedCategory->name . " - Chatterie des Soleils d'Orient"
-        : "Chats Abyssins disponibles - Chatterie des Soleils d'Orient";
-    $pageDescription = $selectedCategory
-        ? "Consultez les profils Abyssins de la categorie {$selectedCategory->name} : photos, statut, caracteristiques et contact."
-        : "Consultez les profils publics des Abyssins disponibles ou reserves : photos, statut, caracteristiques et informations de contact.";
-    $canonicalUrl = $selectedCategory
+        : "Chats Abyssins disponibles - Chatterie des Soleils d'Orient");
+    $pageDescription = $isBreederTab
+        ? "Découvrez les chats de la chatterie, futurs parents de nos chatons Abyssins."
+        : ($selectedCategory
+        ? "Consultez les profils Abyssins de la catégorie {$selectedCategory->name} : photos, statut, caractéristiques et contact."
+        : "Consultez les profils publics des Abyssins disponibles ou réservés : photos, statut, caractéristiques et informations de contact.");
+    $canonicalUrl = $isBreederTab
+        ? route('cats.index', ['type' => 'chatterie'])
+        : ($selectedCategory
         ? route('cats.index', ['categorie' => $selectedCategory->slug])
-        : route('cats.index');
+        : route('cats.index'));
     $breadcrumbSchema = [
         '@context' => 'https://schema.org',
         '@type' => 'BreadcrumbList',
@@ -53,25 +60,30 @@
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
         <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
             <div>
-                <p class="eyebrow">Nos chats</p>
-                <h1 class="page-title mt-4">Nos Compagnons</h1>
+                <p class="eyebrow">{{ $isBreederTab ? 'Notre élevage' : 'Adoption' }}</p>
+                <h1 class="page-title mt-4">{{ $isBreederTab ? 'Les chats de la chatterie' : 'Chats à adopter' }}</h1>
                 <p class="body-copy mt-6 max-w-2xl">
-                    Cette page presente les profils actuellement visibles au public : chats disponibles
-                    et, lorsque cela est utile, profils deja reserves mais encore consultables.
+                    @if ($isBreederTab)
+                        Découvrez les mâles et femelles de la chatterie, parents de nos futurs chatons. Ces chats sont présentés à titre informatif et ne sont pas à vendre.
+                    @else
+                        Cette page présente les chats actuellement disponibles et, lorsque cela est utile, les profils déjà réservés mais encore consultables.
+                    @endif
                 </p>
                 <div class="mt-6 flex flex-wrap gap-3">
-                    <span class="tag-chip">Disponibles</span>
-                    <span class="tag-chip">Reserves</span>
-                    <span class="tag-chip">Profils vendus non affiches</span>
+                    <a href="{{ route('cats.index') }}" class="tag-chip {{ !$isBreederTab ? 'ring-2 ring-amber-500' : '' }}">Chats à adopter</a>
+                    <a href="{{ route('cats.index', ['type' => 'chatterie']) }}" class="tag-chip {{ $isBreederTab ? 'ring-2 ring-amber-500' : '' }}">Chats de la chatterie</a>
                 </div>
             </div>
 
             <div class="section-card p-5 sm:p-6">
                 <form method="GET" action="{{ route('cats.index') }}" class="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
+                    @if ($isBreederTab)
+                        <input type="hidden" name="type" value="chatterie">
+                    @endif
                     <div>
-                        <label for="categorie" class="eyebrow">Lignee / categorie</label>
+                        <label for="categorie" class="eyebrow">Lignée / catégorie</label>
                         <select id="categorie" name="categorie" class="filter-select mt-3">
-                            <option value="">Toutes les categories</option>
+                            <option value="">Toutes les catégories</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->slug }}" @selected($selectedCategorySlug === $category->slug)>{{ $category->name }}</option>
                             @endforeach
@@ -82,8 +94,8 @@
 
                 @if ($selectedCategory)
                     <div class="mt-4 flex flex-wrap items-center gap-3">
-                        <span class="tag-chip">Filtre actif: {{ $selectedCategory->name }}</span>
-                        <a href="{{ route('cats.index') }}" class="btn-ghost px-0">Reinitialiser</a>
+                        <span class="tag-chip">Filtre actif : {{ $selectedCategory->name }}</span>
+                        <a href="{{ route('cats.index', $isBreederTab ? ['type' => 'chatterie'] : []) }}" class="btn-ghost px-0">Réinitialiser</a>
                     </div>
                 @endif
             </div>
@@ -92,14 +104,14 @@
 
     @if ($invalidCategory)
         <div class="mt-6 rounded-[1.5rem] border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">
-            La categorie demandee n'existe pas.
+            La catégorie demandée n'existe pas.
         </div>
     @endif
 
     <section class="mt-12">
         @if ($cats->isEmpty())
             <div class="section-card p-10 text-center text-stone-500">
-                Aucun chat trouve pour le moment.
+                Aucun chat trouvé pour le moment.
             </div>
         @else
             <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -113,7 +125,7 @@
                             @if ($cat->image)
                                 <img src="{{ asset('storage/' . $cat->image) }}" alt="Portrait de {{ $cat->name }}" class="featured-portrait h-full w-full object-cover" loading="lazy" decoding="async">
                             @else
-                                <div class="flex h-full items-center justify-center text-sm font-semibold text-white/80">Image a venir</div>
+                                <div class="flex h-full items-center justify-center text-sm font-semibold text-white/80">Image à venir</div>
                             @endif
                         </div>
 
@@ -127,17 +139,21 @@
                                         {{ $cat->breed }}{{ $cat->color ? ' · ' . $cat->color : '' }}
                                     </p>
                                 </div>
-                                <x-status-badge :status="$cat->status" class="shrink-0" />
+                                @if ($cat->is_breeder)
+                                    <span class="tag-chip shrink-0">Parent</span>
+                                @else
+                                    <x-status-badge :status="$cat->status" class="shrink-0" />
+                                @endif
                             </div>
 
                             <p class="subtle-text mt-4">
-                                {{ Str::limit($cat->description ?: "Un Abyssin au regard solaire, eleve dans un cadre familial avec toute l'attention qu'il merite.", 110) }}
+                                {{ Str::limit($cat->description ?: "Un Abyssin au regard solaire, élevé dans un cadre familial avec toute l'attention qu'il mérite.", 110) }}
                             </p>
 
                             <div class="mt-5 grid gap-3 sm:grid-cols-2">
                                 <div class="detail-pill">
-                                    <p class="eyebrow">Age</p>
-                                    <p class="mt-2 text-lg font-semibold text-amber-950">{{ $cat->display_age ?? 'Non renseigne' }}</p>
+                                    <p class="eyebrow">Âge</p>
+                                    <p class="mt-2 text-lg font-semibold text-amber-950">{{ $cat->display_age ?? 'Non renseigné' }}</p>
                                 </div>
                                 <div class="detail-pill">
                                     <p class="eyebrow">Genre</p>
@@ -146,8 +162,8 @@
                             </div>
 
                             <div class="mt-5 flex items-center justify-between gap-3 border-t border-amber-100 pt-4">
-                                <span class="min-w-0 truncate text-sm text-stone-600">{{ $cat->category?->name ?? 'Sans categorie' }}</span>
-                                <span class="btn-ghost shrink-0 px-0 text-amber-900">Voir details</span>
+                                <span class="min-w-0 truncate text-sm text-stone-600">{{ $cat->category?->name ?? 'Sans catégorie' }}</span>
+                                <span class="btn-ghost shrink-0 px-0 text-amber-900">Voir les détails</span>
                             </div>
                         </div>
                     </a>
@@ -165,10 +181,10 @@
             <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div>
                     <p class="text-sm uppercase tracking-[0.24em] text-white/65">Adoption</p>
-                    <h2 class="mt-4 font-display text-5xl leading-tight text-white">Besoin d'un avis avant de vous decider ?</h2>
+                    <h2 class="mt-4 font-display text-5xl leading-tight text-white">Besoin d'un avis avant de vous décider ?</h2>
                     <p class="mt-4 max-w-2xl text-sm leading-7 text-white/78">
-                        Nous pouvons vous aider a comparer plusieurs profils, comprendre un statut
-                        de reservation et verifier l'adaptation a votre foyer.
+                        Nous pouvons vous aider à comparer plusieurs profils, comprendre un statut
+                        de réservation et vérifier l'adaptation à votre foyer.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3 lg:justify-end">

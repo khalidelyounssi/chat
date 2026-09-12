@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
 @section('title', "Avis clients - Chatterie des Soleils d'Orient")
-@section('meta_description', "Consultez les avis des familles et partagez votre experience avec la Chatterie des Soleils d'Orient.")
+@section('meta_description', "Consultez les avis des familles et partagez votre expérience avec la Chatterie des Soleils d'Orient.")
 @section('canonical', route('reviews'))
 
 @section('content')
@@ -29,10 +29,10 @@
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
         <div class="max-w-3xl">
             <p class="eyebrow">Avis des familles</p>
-            <h1 class="page-title mt-4">Vos experiences, en toute simplicite</h1>
+            <h1 class="page-title mt-4">Vos expériences, en toute simplicité</h1>
             <p class="body-copy mt-6 max-w-2xl">
-                Decouvrez les retours partages par les familles et laissez quelques mots sur votre experience
-                avec la chatterie. Chaque avis est verifie avant sa publication.
+                Découvrez les retours partagés par les familles et laissez quelques mots sur votre expérience
+                avec la chatterie. Chaque avis est vérifié avant sa publication.
             </p>
         </div>
     </section>
@@ -63,7 +63,7 @@
                                         <p class="font-semibold text-amber-950">{{ $review->name }}</p>
                                         <p class="mt-1 text-xs text-stone-500">{{ $review->approved_at?->translatedFormat('F Y') }}</p>
                                     </div>
-                                    <div class="review-stars" aria-label="{{ $review->rating }} etoiles sur 5">
+                                    <div class="review-stars" aria-label="{{ $review->rating }} étoiles sur 5">
                                         @for ($star = 1; $star <= 5; $star++)
                                             <span class="{{ $star > $review->rating ? 'review-star-muted' : '' }}">&#9733;</span>
                                         @endfor
@@ -73,15 +73,15 @@
                             </article>
                         @empty
                             <div class="rounded-[1.5rem] border border-dashed border-amber-200 bg-amber-50/50 p-6 sm:col-span-2">
-                                <p class="font-display text-3xl text-amber-950">Soyez la premiere famille a partager son experience.</p>
-                                <p class="subtle-text mt-2">Votre avis apparaitra ici apres une verification rapide.</p>
+                                <p class="font-display text-3xl text-amber-950">Soyez la première famille à partager son expérience.</p>
+                                <p class="subtle-text mt-2">Votre avis apparaîtra ici après une vérification rapide.</p>
                             </div>
                         @endforelse
                     </div>
                 </div>
 
                 <div id="laisser-un-avis" class="scroll-mt-36 bg-amber-50/45 px-6 py-9 sm:px-9 lg:py-10">
-                    <p class="eyebrow">Partager votre experience</p>
+                    <p class="eyebrow">Partager votre expérience</p>
                     <h2 class="mt-3 font-display text-4xl font-semibold text-amber-950">Laisser un avis</h2>
                     <p class="subtle-text mt-3">Quelques mots suffisent. Votre avis sera relu avant sa publication.</p>
 
@@ -94,7 +94,7 @@
                         </div>
 
                         <div>
-                            <label for="review-name" class="label-base">Votre prenom ou votre nom</label>
+                            <label for="review-name" class="label-base">Votre prénom ou votre nom</label>
                             <input
                                 id="review-name"
                                 name="name"
@@ -120,8 +120,8 @@
                                         {{ (int) old('rating') === $rating ? 'checked' : '' }}
                                         required
                                     >
-                                    <label for="rating-{{ $rating }}" title="{{ $rating }} etoiles">
-                                        <span class="sr-only">{{ $rating }} etoiles</span>&#9733;
+                                    <label for="rating-{{ $rating }}" title="{{ $rating }} étoiles">
+                                        <span class="sr-only">{{ $rating }} étoiles</span>&#9733;
                                     </label>
                                 @endfor
                             </div>
@@ -136,7 +136,7 @@
                                 minlength="10"
                                 maxlength="1200"
                                 class="input-base resize-y"
-                                placeholder="Racontez votre experience avec la chatterie..."
+                                placeholder="Racontez votre expérience avec la chatterie..."
                                 required
                             >{{ old('comment') }}</textarea>
                         </div>

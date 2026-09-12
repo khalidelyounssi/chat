@@ -1,11 +1,11 @@
 @php
-    $logoPath = 'images/soleils-orient-emblem.png';
+    $logoPath = 'images/soleils-abyssins-emblem.png';
     $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
     $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
     $adminNavItems = [
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'active' => request()->routeIs('admin.dashboard')],
         ['label' => 'Chats', 'route' => 'admin.cats.index', 'active' => request()->routeIs('admin.cats.*')],
-        ['label' => 'Categories', 'route' => 'admin.categories.index', 'active' => request()->routeIs('admin.categories.*')],
+        ['label' => 'Catégories', 'route' => 'admin.categories.index', 'active' => request()->routeIs('admin.categories.*')],
         ['label' => 'Avis', 'route' => 'admin.reviews.index', 'active' => request()->routeIs('admin.reviews.*')],
         ['label' => 'Voir le site', 'route' => 'home', 'active' => false],
     ];
@@ -93,7 +93,7 @@
                         <div>
                             <p class="eyebrow">Administration</p>
                             <h1 class="mt-3 text-4xl font-semibold text-amber-950 sm:text-5xl">@yield('page-title', 'Dashboard')</h1>
-                            <p class="mt-2 text-sm leading-7 text-stone-600">Gestion des chats, categories et contenus de la chatterie.</p>
+                            <p class="mt-2 text-sm leading-7 text-stone-600">Gestion des chats, catégories et contenus de la chatterie.</p>
                         </div>
                     </div>
                 </header>

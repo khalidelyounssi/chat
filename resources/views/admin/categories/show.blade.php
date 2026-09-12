@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Details categorie - Admin')
-@section('page-title', 'Details categorie')
+@section('title', 'Détails de la catégorie - Admin')
+@section('page-title', 'Détails de la catégorie')
 
 @section('content')
     <section class="card-soft p-6 sm:p-8">

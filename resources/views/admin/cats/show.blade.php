@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Details chat - Admin')
-@section('page-title', 'Details chat')
+@section('title', 'Détails du chat - Admin')
+@section('page-title', 'Détails du chat')
 
 @section('content')
     <section class="card-soft overflow-hidden">
@@ -16,7 +16,10 @@
             <div class="space-y-5 p-6 sm:p-8">
                 <div class="flex items-center justify-between gap-3">
                     <h2 class="text-3xl font-semibold text-stone-900">{{ $cat->name }}</h2>
-                    <x-status-badge :status="$cat->status" />
+                    <div class="flex flex-wrap gap-2">
+                        @if ($cat->is_breeder)<span class="tag-chip">Chat de la chatterie</span>@endif
+                        <x-status-badge :status="$cat->status" />
+                    </div>
                 </div>
 
                 <dl class="grid gap-3 text-sm text-stone-700 sm:grid-cols-2">
@@ -25,7 +28,7 @@
                         <dd>{{ $cat->slug }}</dd>
                     </div>
                     <div>
-                        <dt class="font-semibold text-stone-500">Categorie</dt>
+                        <dt class="font-semibold text-stone-500">Catégorie</dt>
                         <dd>{{ $cat->category?->name ?? 'Aucune' }}</dd>
                     </div>
                     <div>
@@ -37,12 +40,12 @@
                         <dd>{{ $cat->breed }}</dd>
                     </div>
                     <div>
-                        <dt class="font-semibold text-stone-500">Age</dt>
-                        <dd>{{ $cat->display_age ?? 'Non renseigne' }}</dd>
+                        <dt class="font-semibold text-stone-500">Âge</dt>
+                        <dd>{{ $cat->display_age ?? 'Non renseigné' }}</dd>
                     </div>
                     <div>
                         <dt class="font-semibold text-stone-500">Poids</dt>
-                        <dd>{{ $cat->weight ? $cat->weight . ' kg' : 'Non renseigne' }}</dd>
+                        <dd>{{ $cat->weight ? $cat->weight . ' kg' : 'Non renseigné' }}</dd>
                     </div>
                 </dl>
 

@@ -19,6 +19,7 @@ class Cat extends Model
         'color',
         'weight',
         'status',
+        'is_breeder',
         'description',
         'image',
         'gallery',
@@ -31,6 +32,7 @@ class Cat extends Model
         'gallery' => 'array',
         'birth_date' => 'date',
         'weight' => 'decimal:2',
+        'is_breeder' => 'boolean',
     ];
 
     public function category(): BelongsTo

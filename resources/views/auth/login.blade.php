@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         @php
-            $logoPath = 'images/soleils-orient-emblem.png';
+            $logoPath = 'images/soleils-abyssins-emblem.png';
             $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
             $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
         @endphp
@@ -27,13 +27,13 @@
                         <img src="{{ $logoAsset }}" alt="Soleils d'Orient" class="h-full w-full rounded-full object-cover">
                     </span>
                     <div>
-                        <p class="eyebrow">Acces securise</p>
+                        <p class="eyebrow">Accès sécurisé</p>
                         <h1 class="mt-2 font-display text-4xl text-amber-950">Connexion admin</h1>
                     </div>
                 </div>
 
                 <p class="subtle-text mt-4">
-                    L'espace administration est protege. Connectez-vous pour gerer les chats, categories et contenus.
+                    L'espace administration est protégé. Connectez-vous pour gérer les chats, catégories et contenus.
                 </p>
 
                 @if ($errors->any())

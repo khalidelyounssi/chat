@@ -13,6 +13,7 @@ class PageController extends Controller
     public function home(): View
     {
         $featuredCats = Cat::query()
+            ->where('is_breeder', false)
             ->where('status', 'available')
             ->with('category')
             ->latest()
@@ -99,7 +100,9 @@ class PageController extends Controller
         ]);
 
         $catUrls = Cat::query()
-            ->whereIn('status', config('chatterie.public_statuses', ['available', 'reserved']))
+            ->where(fn ($query) => $query
+                ->where('is_breeder', true)
+                ->orWhereIn('status', config('chatterie.public_statuses', ['available', 'reserved'])))
             ->latest('updated_at')
             ->get()
             ->map(fn (Cat $cat): array => [

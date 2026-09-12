@@ -2,7 +2,7 @@
     $site = config('chatterie.site');
     $siteName = (string) data_get($site, 'name', "Chatterie des Soleils d'Orient");
     $siteTagline = (string) data_get($site, 'tagline', "Chatterie d'Abyssins");
-    $logoPath = 'images/soleils-orient-emblem.png';
+    $logoPath = 'images/soleils-abyssins-emblem.png';
     $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
     $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
     $metaTitle = trim($__env->yieldContent('title', $siteName));
@@ -25,13 +25,16 @@
     $whatsAppNumber = preg_replace('/\D+/', '', (string) config('chatterie.whatsapp.number'));
     $hasWhatsApp = strlen($whatsAppNumber) >= 8;
     $message = $whatsappMessage ?? config('chatterie.whatsapp.default_text');
+    $viewingBreederCat = request()->routeIs('cats.show')
+        && (bool) data_get(request()->route('cat'), 'is_breeder', false);
     $whatsAppLink = $hasWhatsApp
         ? 'https://wa.me/' . $whatsAppNumber . '?text=' . rawurlencode((string) $message)
         : null;
     $navItems = [
         ['label' => 'Accueil', 'route' => 'home', 'active' => request()->routeIs('home')],
-        ['label' => 'Nos chats', 'route' => 'cats.index', 'active' => request()->routeIs('cats.*')],
-        ['label' => 'A propos', 'route' => 'about', 'active' => request()->routeIs('about')],
+        ['label' => 'Chats à adopter', 'href' => route('cats.index'), 'active' => request()->routeIs('cats.*') && request()->query('type') !== 'chatterie' && !$viewingBreederCat],
+        ['label' => 'Chats de la chatterie', 'href' => route('cats.index', ['type' => 'chatterie']), 'active' => request()->routeIs('cats.*') && (request()->query('type') === 'chatterie' || $viewingBreederCat)],
+        ['label' => 'À propos', 'route' => 'about', 'active' => request()->routeIs('about')],
         ['label' => 'Avis', 'route' => 'reviews', 'active' => request()->routeIs('reviews')],
         ['label' => 'Contact', 'route' => 'contact', 'active' => request()->routeIs('contact')],
     ];
@@ -148,7 +151,7 @@
                         <nav class="navbar-links">
                             @foreach ($navItems as $item)
                                 <a
-                                    href="{{ route($item['route']) }}"
+                                    href="{{ $item['href'] ?? route($item['route']) }}"
                                     class="nav-pill {{ $item['active'] ? 'nav-pill-active' : '' }}"
                                 >
                                     {{ $item['label'] }}
@@ -187,14 +190,14 @@
                 <div class="section-card px-6 py-8 sm:px-8">
                     <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_0.9fr]">
                         <div>
-                            <p class="eyebrow">Elevage responsable</p>
+                            <p class="eyebrow">Élevage responsable</p>
                             <h2 class="mt-3 text-4xl font-semibold text-amber-950">{{ $siteName }}</h2>
                             <p class="mt-3 max-w-2xl text-sm leading-7 text-stone-600">
                                 {{ data_get($site, 'meta_description') }}
                             </p>
                             <div class="mt-5 flex flex-wrap gap-3">
-                                <a href="{{ route('cats.index') }}" class="btn-secondary">Voir les disponibilites</a>
-                                <a href="{{ route('contact') }}" class="btn-primary">Preparer une adoption</a>
+                                <a href="{{ route('cats.index') }}" class="btn-secondary">Voir les disponibilités</a>
+                                <a href="{{ route('contact') }}" class="btn-primary">Préparer une adoption</a>
                             </div>
                         </div>
 
@@ -203,10 +206,10 @@
                             <div class="mt-4 grid gap-3">
                                 <a href="{{ route('home') }}" class="footer-link">Accueil</a>
                                 <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
-                                <a href="{{ route('about') }}" class="footer-link">A propos</a>
+                                <a href="{{ route('about') }}" class="footer-link">À propos</a>
                                 <a href="{{ route('reviews') }}" class="footer-link">Avis</a>
                                 <a href="{{ route('contact') }}" class="footer-link">Contact</a>
-                                <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>
+                                <a href="{{ route('legal') }}" class="footer-link">Mentions légales</a>
                                 <a href="{{ route('guides.adoption') }}" class="footer-link">Guide adoption</a>
                                 <a href="{{ route('guides.breed') }}" class="footer-link">Guide race Abyssin</a>
                                 <a href="{{ route('guides.local') }}" class="footer-link">Guide local Morbihan</a>
@@ -238,15 +241,15 @@
 
                     <div class="mt-8 flex flex-wrap gap-4 border-t border-amber-100 pt-5 text-xs uppercase tracking-[0.2em] text-stone-500">
                         <span>{{ data_get($site, 'legal_status') }}</span>
-                        <span>Visibilite publique: disponibles et reserves</span>
+                        <span>Visibilité publique : disponibles, réservés et chats de la chatterie</span>
                     </div>
                     <div class="mt-3 flex flex-wrap gap-4 text-xs text-stone-500">
                             <a href="{{ route('cats.index') }}" class="footer-link">Nos chats</a>
                             <a href="{{ route('contact') }}" class="footer-link">Contact adoption</a>
                             <a href="{{ route('reviews') }}" class="footer-link">Laisser un avis</a>
                             <a href="{{ route('guides.adoption') }}" class="footer-link">Conseils adoption</a>
-                            <a href="{{ route('guides.local') }}" class="footer-link">Saint-Ave & Vannes</a>
-                            <a href="{{ route('legal') }}" class="footer-link">Mentions legales</a>
+                            <a href="{{ route('guides.local') }}" class="footer-link">Saint-Avé & Vannes</a>
+                            <a href="{{ route('legal') }}" class="footer-link">Mentions légales</a>
                     </div>
                 </div>
             </div>
@@ -272,7 +275,7 @@
             aria-hidden="true"
         >
             <button type="button" class="lightbox-backdrop" data-lightbox-close aria-label="Fermer la galerie"></button>
-            <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Apercu de l'image">
+            <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Aperçu de l'image">
                 <button type="button" class="lightbox-close" data-lightbox-close aria-label="Fermer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
@@ -283,7 +286,7 @@
                     <figcaption class="lightbox-caption" data-lightbox-caption></figcaption>
                 </figure>
                 <div class="lightbox-actions">
-                    <button type="button" class="lightbox-nav" data-lightbox-prev aria-label="Image precedente">
+                    <button type="button" class="lightbox-nav" data-lightbox-prev aria-label="Image précédente">
                         &larr;
                     </button>
                     <button type="button" class="lightbox-nav" data-lightbox-next aria-label="Image suivante">

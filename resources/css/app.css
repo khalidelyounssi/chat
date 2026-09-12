@@ -494,7 +494,8 @@
     }
 
     .metric-value {
-        @apply mt-4 block font-display text-5xl text-amber-950;
+        overflow-wrap: anywhere;
+        @apply mt-4 block font-display text-[clamp(2.25rem,4vw,3rem)] leading-none text-amber-950;
     }
 
     .detail-pill {
@@ -974,7 +975,7 @@
         }
 
         .metric-value {
-            font-size: 2.6rem;
+            font-size: 2.25rem;
         }
     }
 }

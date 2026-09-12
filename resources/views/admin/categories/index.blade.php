@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Categories - Admin')
-@section('page-title', 'Categories')
+@section('title', 'Catégories - Admin')
+@section('page-title', 'Catégories')
 
 @section('content')
     <div class="mb-5">
-        <a href="{{ route('admin.categories.create') }}" class="btn-primary">Ajouter une categorie</a>
+        <a href="{{ route('admin.categories.create') }}" class="btn-primary">Ajouter une catégorie</a>
     </div>
 
     <div class="admin-panel overflow-hidden">
@@ -43,7 +43,7 @@
                                 <div class="inline-flex items-center gap-2">
                                     <a href="{{ route('admin.categories.show', $category) }}" class="rounded-full border border-stone-200 px-3 py-1.5 text-xs font-semibold text-stone-600 hover:bg-stone-50">Voir</a>
                                     <a href="{{ route('admin.categories.edit', $category) }}" class="rounded-full border border-amber-200 px-3 py-1.5 text-xs font-semibold text-amber-700 hover:bg-amber-50">Modifier</a>
-                                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" onsubmit="return confirm('Supprimer cette categorie ?');">
+                                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" onsubmit="return confirm('Supprimer cette catégorie ?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="rounded-full border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50">Supprimer</button>
@@ -53,7 +53,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-5 py-8 text-center text-stone-500">Aucune categorie enregistree.</td>
+                            <td colspan="5" class="px-5 py-8 text-center text-stone-500">Aucune catégorie enregistrée.</td>
                         </tr>
                     @endforelse
                 </tbody>

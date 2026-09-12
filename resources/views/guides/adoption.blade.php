@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', "Adopter un chaton Abyssin a Saint-Ave - Guide pratique")
-@section('meta_description', "Guide pratique pour adopter un chaton Abyssin a Saint-Ave : questions a poser, rythme du foyer, disponibilites et conseils avant l'adoption.")
+@section('title', "Adopter un chaton Abyssin à Saint-Avé - Guide pratique")
+@section('meta_description', "Guide pratique pour adopter un chaton Abyssin à Saint-Avé : questions à poser, rythme du foyer, disponibilités et conseils avant l'adoption.")
 @section('canonical', route('guides.adoption'))
 
 @section('content')
@@ -19,8 +19,8 @@
         $articleSchema = [
             '@context' => 'https://schema.org',
             '@type' => 'Article',
-            'headline' => "Adopter un chaton Abyssin a {$city}",
-            'description' => "Guide pratique pour preparer l'adoption d'un chaton Abyssin a {$city}.",
+            'headline' => "Adopter un chaton Abyssin à {$city}",
+            'description' => "Guide pratique pour préparer l'adoption d'un chaton Abyssin à {$city}.",
             'author' => ['@type' => 'Person', 'name' => data_get($site, 'owner_name', data_get($site, 'name'))],
             'publisher' => ['@type' => 'Organization', 'name' => data_get($site, 'name')],
             'mainEntityOfPage' => route('guides.adoption'),
@@ -30,11 +30,11 @@
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
         <div class="max-w-4xl">
             <p class="eyebrow">Guide adoption</p>
-            <h1 class="page-title mt-4">Adopter un chaton Abyssin a {{ $city }} : ce qu'il faut vraiment preparer</h1>
+            <h1 class="page-title mt-4">Adopter un chaton Abyssin à {{ $city }} : ce qu'il faut vraiment préparer</h1>
             <p class="body-copy mt-6 max-w-3xl">
-                Avant d'adopter un chaton Abyssin, le plus important n'est pas seulement la disponibilite
-                du profil, mais la compatibilite entre son temperament, votre rythme de vie et l'equilibre
-                du foyer. Ce guide resume les points concrets a verifier avant un premier echange.
+                Avant d'adopter un chaton Abyssin, le plus important n'est pas seulement la disponibilité
+                du profil, mais la compatibilité entre son tempérament, votre rythme de vie et l'équilibre
+                du foyer. Ce guide résume les points concrets à vérifier avant un premier échange.
             </p>
         </div>
     </section>
@@ -45,13 +45,13 @@
             <h2 class="section-title mt-4">Les 4 questions qui font gagner du temps</h2>
             <div class="mt-6 grid gap-4">
                 <div class="detail-pill">
-                    <p class="text-base font-semibold text-amber-950">Combien de temps le chat sera-t-il seul dans la journee ?</p>
+                    <p class="text-base font-semibold text-amber-950">Combien de temps le chat sera-t-il seul dans la journée ?</p>
                 </div>
                 <div class="detail-pill">
                     <p class="text-base font-semibold text-amber-950">Votre foyer comprend-il des enfants ou d'autres animaux ?</p>
                 </div>
                 <div class="detail-pill">
-                    <p class="text-base font-semibold text-amber-950">Cherchez-vous un chaton immediatement disponible ou un projet a moyen terme ?</p>
+                    <p class="text-base font-semibold text-amber-950">Cherchez-vous un chaton immédiatement disponible ou un projet à moyen terme ?</p>
                 </div>
                 <div class="detail-pill">
                     <p class="text-base font-semibold text-amber-950">Pouvez-vous offrir interactions, jeux et environnement stimulant ?</p>
@@ -61,10 +61,10 @@
 
         <article class="luminous-panel p-8">
             <p class="text-sm uppercase tracking-[0.24em] text-white/65">Abyssin</p>
-            <h2 class="mt-4 font-display text-5xl leading-tight text-white">Une race vive, curieuse et tres relationnelle</h2>
+            <h2 class="mt-4 font-display text-5xl leading-tight text-white">Une race vive, curieuse et très relationnelle</h2>
             <p class="mt-5 text-sm leading-7 text-white/85">
-                L'Abyssin convient bien aux foyers qui aiment la presence d'un chat actif, proche de l'humain
-                et implique dans la vie quotidienne. Il a besoin d'attention, de jeu et d'un cadre coherent.
+                L'Abyssin convient bien aux foyers qui aiment la présence d'un chat actif, proche de l'humain
+                et impliqué dans la vie quotidienne. Il a besoin d'attention, de jeu et d'un cadre cohérent.
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
                 <span class="tag-chip border-white/20 bg-white/10 text-white">Interactif</span>
@@ -76,16 +76,16 @@
 
     <section class="mt-12">
         <div class="section-card p-8">
-            <p class="eyebrow">Pourquoi un echange humain reste essentiel</p>
+            <p class="eyebrow">Pourquoi un échange humain reste essentiel</p>
             <h2 class="section-title mt-4">Un bon profil ne se choisit pas uniquement sur photo</h2>
             <p class="body-copy mt-5">
-                Un site peut vous aider a comparer les profils, lire les statuts, regarder les images et
-                comprendre les premieres informations utiles. Mais le bon choix depend aussi de votre foyer,
+                Un site peut vous aider à comparer les profils, lire les statuts, regarder les images et
+                comprendre les premières informations utiles. Mais le bon choix dépend aussi de votre foyer,
                 de vos habitudes et de ce que vous attendez vraiment d'un compagnon au quotidien.
             </p>
             <p class="subtle-text mt-5">
-                C'est pour cela qu'un premier contact reste la meilleure etape pour confirmer si un chaton
-                Abyssin disponible a {{ $city }} correspond reellement a votre projet.
+                C'est pour cela qu'un premier contact reste la meilleure étape pour confirmer si un chaton
+                Abyssin disponible à {{ $city }} correspond réellement à votre projet.
             </p>
             <div class="mt-8 flex flex-wrap gap-3">
                 <a href="{{ route('cats.index') }}" class="btn-primary">Voir les chats visibles</a>

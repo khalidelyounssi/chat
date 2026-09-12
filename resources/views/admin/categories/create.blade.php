@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Nouvelle categorie - Admin')
-@section('page-title', 'Ajouter une categorie')
+@section('title', 'Nouvelle catégorie - Admin')
+@section('page-title', 'Ajouter une catégorie')
 
 @section('content')
     <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data" class="admin-panel p-6 sm:p-8">
@@ -24,7 +24,7 @@
 
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    preview.innerHTML = `<img src="${e.target.result}" class="h-full w-full object-cover" alt="Apercu">`;
+                    preview.innerHTML = `<img src="${e.target.result}" class="h-full w-full object-cover" alt="Aperçu">`;
                 };
                 reader.readAsDataURL(file);
             });

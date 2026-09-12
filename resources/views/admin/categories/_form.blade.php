@@ -13,7 +13,7 @@
         <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-stone-300 bg-white px-4 py-2.5">
             <input type="hidden" name="is_active" value="0">
             <input id="is_active" type="checkbox" name="is_active" value="1" class="h-4 w-4 rounded border-stone-300 text-amber-600 focus:ring-amber-500" @checked(old('is_active', $category?->is_active ?? true))>
-            <span class="text-sm text-stone-700">Categorie active</span>
+            <span class="text-sm text-stone-700">Catégorie active</span>
         </label>
     </div>
 
@@ -29,12 +29,12 @@
     </div>
 
     <div>
-        <p class="label-base">Apercu</p>
+        <p class="label-base">Aperçu</p>
         <div id="category-image-preview" class="flex h-40 w-full items-center justify-center overflow-hidden rounded-xl border border-dashed border-stone-300 bg-stone-50 text-xs text-stone-400">
             @if ($category?->image)
-                <img src="{{ asset('storage/' . $category->image) }}" alt="Apercu categorie" class="h-full w-full object-cover">
+                <img src="{{ asset('storage/' . $category->image) }}" alt="Aperçu de la catégorie" class="h-full w-full object-cover">
             @else
-                Image non definie
+                Image non définie
             @endif
         </div>
     </div>

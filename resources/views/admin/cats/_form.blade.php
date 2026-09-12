@@ -5,9 +5,9 @@
 <div class="admin-form-shell">
     <section class="admin-form-section">
         <div class="mb-5">
-            <p class="eyebrow">Identite</p>
+            <p class="eyebrow">Identité</p>
             <h2 class="mt-2 text-3xl font-semibold text-amber-950">Informations principales</h2>
-            <p class="subtle-text mt-2">Les donnees essentielles du profil public du chat.</p>
+            <p class="subtle-text mt-2">Les données essentielles du profil public du chat.</p>
         </div>
 
         <div class="grid gap-5 md:grid-cols-2">
@@ -17,7 +17,7 @@
             </div>
 
             <div>
-                <label for="category_id" class="label-base">Categorie</label>
+                <label for="category_id" class="label-base">Catégorie</label>
                 <select id="category_id" name="category_id" class="input-base">
                     <option value="">Aucune</option>
                     @foreach ($categories as $category)
@@ -29,7 +29,7 @@
             <div>
                 <label for="gender" class="label-base">Genre</label>
                 <select id="gender" name="gender" class="input-base" required>
-                    <option value="male" @selected(old('gender', $cat?->gender) === 'male')>Male</option>
+                    <option value="male" @selected(old('gender', $cat?->gender) === 'male')>Mâle</option>
                     <option value="female" @selected(old('gender', $cat?->gender) === 'female')>Femelle</option>
                 </select>
             </div>
@@ -38,23 +38,34 @@
                 <label for="status" class="label-base">Statut</label>
                 <select id="status" name="status" class="input-base" required>
                     <option value="available" @selected(old('status', $cat?->status ?? 'available') === 'available')>Disponible</option>
-                    <option value="reserved" @selected(old('status', $cat?->status) === 'reserved')>Reserve</option>
+                    <option value="reserved" @selected(old('status', $cat?->status) === 'reserved')>Réservé</option>
                     <option value="sold" @selected(old('status', $cat?->status) === 'sold')>Vendu</option>
                 </select>
+            </div>
+
+            <div class="md:col-span-2">
+                <input type="hidden" name="is_breeder" value="0">
+                <label class="inline-flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50/70 p-4">
+                    <input type="checkbox" name="is_breeder" value="1" class="mt-1 h-4 w-4 rounded border-stone-300 text-amber-700 focus:ring-amber-500" @checked((bool) old('is_breeder', $cat?->is_breeder ?? false))>
+                    <span>
+                        <span class="block font-semibold text-amber-950">Chat de la chatterie</span>
+                        <span class="mt-1 block text-sm text-stone-600">Cochez cette case pour présenter ce parent reproducteur sans l'afficher parmi les chats à adopter.</span>
+                    </span>
+                </label>
             </div>
         </div>
     </section>
 
     <section class="admin-form-section">
         <div class="mb-5">
-            <p class="eyebrow">Caracteristiques</p>
+            <p class="eyebrow">Caractéristiques</p>
             <h2 class="mt-2 text-3xl font-semibold text-amber-950">Details du chat</h2>
-            <p class="subtle-text mt-2">Age, robe, race et informations complementaires.</p>
+            <p class="subtle-text mt-2">Âge, robe, race et informations complémentaires.</p>
         </div>
 
         <div class="grid gap-5 md:grid-cols-2">
             <div>
-                <label for="age" class="label-base">Age (annees)</label>
+                <label for="age" class="label-base">Âge (années)</label>
                 <input id="age" type="number" min="0" name="age" class="input-base" value="{{ old('age', $cat?->age) }}">
             </div>
 
@@ -87,7 +98,7 @@
 
     <section class="admin-form-section">
         <div class="mb-5">
-            <p class="eyebrow">Medias</p>
+            <p class="eyebrow">Médias</p>
             <h2 class="mt-2 text-3xl font-semibold text-amber-950">Images et galerie</h2>
             <p class="subtle-text mt-2">Ajoutez une image principale et une galerie pour enrichir la fiche du chat.</p>
         </div>
@@ -107,12 +118,12 @@
                 @endif
 
                 <div>
-                    <p class="label-base">Apercu image principale</p>
+                    <p class="label-base">Aperçu de l'image principale</p>
                     <div id="cat-image-preview" class="admin-upload-box">
                         @if ($cat?->image)
-                            <img src="{{ asset('storage/' . $cat->image) }}" alt="Apercu chat" class="h-full w-full object-cover">
+                            <img src="{{ asset('storage/' . $cat->image) }}" alt="Aperçu du chat" class="h-full w-full object-cover">
                         @else
-                            Image non definie
+                            Image non définie
                         @endif
                     </div>
                 </div>

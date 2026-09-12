@@ -8,7 +8,7 @@
         <div class="border-b border-amber-100 px-5 py-5 sm:px-6">
             <p class="eyebrow">Moderation</p>
             <h2 class="mt-2 text-3xl font-semibold text-amber-950">Commentaires recus</h2>
-            <p class="mt-2 text-sm text-stone-600">Les nouveaux avis restent invisibles jusqu'a leur publication.</p>
+            <p class="mt-2 text-sm text-stone-600">Les nouveaux avis restent invisibles jusqu'à leur publication.</p>
         </div>
 
         <div class="grid gap-4 p-4 sm:p-6">
@@ -24,13 +24,13 @@
                                     <span class="rounded-full border border-amber-200 bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">En attente</span>
                                 @endif
                             </div>
-                            <div class="review-stars mt-2" aria-label="{{ $review->rating }} etoiles sur 5">
+                            <div class="review-stars mt-2" aria-label="{{ $review->rating }} étoiles sur 5">
                                 @for ($star = 1; $star <= 5; $star++)
                                     <span class="{{ $star > $review->rating ? 'review-star-muted' : '' }}">&#9733;</span>
                                 @endfor
                             </div>
                             <p class="mt-3 max-w-3xl text-sm leading-7 text-stone-700">{{ $review->comment }}</p>
-                            <p class="mt-3 text-xs text-stone-500">Recu le {{ $review->created_at->format('d/m/Y a H:i') }}</p>
+                            <p class="mt-3 text-xs text-stone-500">Reçu le {{ $review->created_at->format('d/m/Y à H:i') }}</p>
                         </div>
 
                         <div class="flex flex-wrap gap-2">
@@ -51,7 +51,7 @@
                     </div>
                 </article>
             @empty
-                <div class="p-8 text-center text-stone-500">Aucun avis recu pour le moment.</div>
+                <div class="p-8 text-center text-stone-500">Aucun avis reçu pour le moment.</div>
             @endforelse
         </div>
     </div>

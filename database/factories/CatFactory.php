@@ -26,6 +26,7 @@ class CatFactory extends Factory
             'color' => fake()->safeColorName(),
             'weight' => fake()->randomFloat(2, 2, 7),
             'status' => fake()->randomElement(['available', 'reserved', 'sold']),
+            'is_breeder' => false,
             'description' => fake()->sentence(),
             'image' => null,
             'gallery' => null,

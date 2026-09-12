@@ -26,20 +26,20 @@
             <p class="subtle-text mt-3">Historique des adoptions finalisees.</p>
         </div>
         <div class="admin-stat-card">
-            <p class="eyebrow">Categories</p>
+            <p class="eyebrow">Catégories</p>
             <p class="metric-value">{{ $stats['categories_total'] }}</p>
-            <p class="subtle-text mt-3">Nombre de categories configurees.</p>
+            <p class="subtle-text mt-3">Nombre de catégories configurées.</p>
         </div>
         <div class="admin-stat-card">
             <p class="eyebrow">Avis en attente</p>
             <p class="metric-value">{{ $stats['reviews_pending'] }}</p>
-            <p class="subtle-text mt-3">Commentaires a verifier avant publication.</p>
-            <a href="{{ route('admin.reviews.index') }}" class="btn-secondary mt-4">Gerer les avis</a>
+            <p class="subtle-text mt-3">Commentaires à vérifier avant publication.</p>
+            <a href="{{ route('admin.reviews.index') }}" class="btn-secondary mt-4">Gérer les avis</a>
         </div>
         <div class="luminous-panel p-6">
             <p class="text-sm uppercase tracking-[0.24em] text-white/65">Actives</p>
             <p class="mt-3 font-display text-6xl text-white">{{ $stats['categories_active'] }}</p>
-            <p class="mt-3 text-sm leading-7 text-white/80">Categories visibles sur le site public.</p>
+            <p class="mt-3 text-sm leading-7 text-white/80">Catégories visibles sur le site public.</p>
         </div>
     </section>
 
@@ -49,7 +49,7 @@
                 <p class="eyebrow">Suivi recent</p>
                 <h2 class="mt-2 text-3xl font-semibold text-amber-950">Derniers chats</h2>
             </div>
-            <a href="{{ route('admin.cats.index') }}" class="btn-secondary">Gerer les chats</a>
+            <a href="{{ route('admin.cats.index') }}" class="btn-secondary">Gérer les chats</a>
         </div>
 
         <div class="overflow-x-auto">
@@ -57,7 +57,7 @@
                 <thead>
                     <tr>
                         <th class="px-5 py-4 sm:px-6">Nom</th>
-                        <th class="px-5 py-4 sm:px-6">Categorie</th>
+                        <th class="px-5 py-4 sm:px-6">Catégorie</th>
                         <th class="px-5 py-4 sm:px-6">Statut</th>
                         <th class="px-5 py-4 sm:px-6">Ajoute le</th>
                     </tr>
@@ -72,7 +72,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-5 py-8 text-center text-stone-500 sm:px-6">Aucun chat enregistre.</td>
+                            <td colspan="4" class="px-5 py-8 text-center text-stone-500 sm:px-6">Aucun chat enregistré.</td>
                         </tr>
                     @endforelse
                 </tbody>

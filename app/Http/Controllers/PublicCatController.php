@@ -18,14 +18,18 @@ class PublicCatController extends Controller
             ->get();
 
         $selectedCategorySlug = trim((string) $request->query('categorie', ''));
+        $selectedType = $request->query('type') === 'chatterie' ? 'chatterie' : 'adoption';
         $selectedCategory = null;
         $invalidCategory = false;
         $publicStatuses = config('chatterie.public_statuses', ['available', 'reserved']);
 
-        $query = Cat::query()
-            ->with('category')
-            ->whereIn('status', $publicStatuses)
-            ->latest();
+        $query = Cat::query()->with('category')->latest();
+
+        if ($selectedType === 'chatterie') {
+            $query->where('is_breeder', true);
+        } else {
+            $query->where('is_breeder', false)->whereIn('status', $publicStatuses);
+        }
 
         if ($selectedCategorySlug !== '') {
             $selectedCategory = $categories->firstWhere('slug', $selectedCategorySlug);
@@ -46,13 +50,14 @@ class PublicCatController extends Controller
             'selectedCategory' => $selectedCategory,
             'selectedCategorySlug' => $selectedCategorySlug,
             'invalidCategory' => $invalidCategory,
+            'selectedType' => $selectedType,
         ]);
     }
 
     public function show(Cat $cat): View
     {
         abort_unless(
-            in_array($cat->status, config('chatterie.public_statuses', ['available', 'reserved']), true),
+            $cat->is_breeder || in_array($cat->status, config('chatterie.public_statuses', ['available', 'reserved']), true),
             404
         );
 
@@ -63,7 +68,12 @@ class PublicCatController extends Controller
         $relatedCats = Cat::query()
             ->with('category')
             ->whereKeyNot($cat->getKey())
-            ->whereIn('status', config('chatterie.public_statuses', ['available', 'reserved']))
+            ->when(
+                $cat->is_breeder,
+                fn (Builder $query): Builder => $query->where('is_breeder', true),
+                fn (Builder $query): Builder => $query->where('is_breeder', false)
+                    ->whereIn('status', config('chatterie.public_statuses', ['available', 'reserved']))
+            )
             ->when(
                 $cat->category_id,
                 fn (Builder $query): Builder => $query->where('category_id', $cat->category_id),

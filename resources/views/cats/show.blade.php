@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', $cat->name . " - Abyssin " . ($cat->status === 'available' ? 'disponible' : 'reserve') . " - Chatterie des Soleils d'Orient")
-@section('meta_description', $cat->description ? \Illuminate\Support\Str::limit($cat->description, 150) : "Decouvrez le profil de {$cat->name}, Abyssin presente par la chatterie.")
+@section('title', $cat->name . ($cat->is_breeder ? " - Chat de la chatterie" : " - Abyssin " . ($cat->status === 'available' ? 'disponible' : 'réservé')) . " - Chatterie des Soleils d'Orient")
+@section('meta_description', $cat->description ? \Illuminate\Support\Str::limit($cat->description, 150) : "Découvrez le profil de {$cat->name}, Abyssin présenté par la chatterie.")
 @section('canonical', route('cats.show', $cat))
 @section('og_image', $cat->image ? asset('storage/' . $cat->image) : '')
 
@@ -27,8 +27,8 @@
                 [
                     '@type' => 'ListItem',
                     'position' => 2,
-                    'name' => 'Nos chats',
-                    'item' => route('cats.index'),
+                    'name' => $cat->is_breeder ? 'Chats de la chatterie' : 'Chats à adopter',
+                    'item' => route('cats.index', $cat->is_breeder ? ['type' => 'chatterie'] : []),
                 ],
                 [
                     '@type' => 'ListItem',
@@ -48,7 +48,7 @@
         ];
     @endphp
 
-    <a href="{{ route('cats.index') }}" class="btn-ghost mb-5 px-0">&larr; Retour a la liste</a>
+    <a href="{{ route('cats.index', $cat->is_breeder ? ['type' => 'chatterie'] : []) }}" class="btn-ghost mb-5 px-0">&larr; Retour à la liste</a>
 
     <section class="glass-panel overflow-hidden p-5 sm:p-6 lg:p-8">
         <div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
@@ -72,13 +72,17 @@
             <div class="flex flex-col justify-between">
                 <div>
                     <div class="flex flex-wrap items-center gap-3">
-                        <span class="tag-chip">{{ $cat->category?->name ?? 'Lignee orientale' }}</span>
-                        <x-status-badge :status="$cat->status" />
+                        <span class="tag-chip">{{ $cat->category?->name ?? 'Lignée orientale' }}</span>
+                        @if ($cat->is_breeder)
+                            <span class="tag-chip">Chat de la chatterie</span>
+                        @else
+                            <x-status-badge :status="$cat->status" />
+                        @endif
                     </div>
 
-                    @if ($cat->status === 'reserved')
+                    @if (!$cat->is_breeder && $cat->status === 'reserved')
                         <div class="mt-4 rounded-[1.3rem] border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                            Ce profil est actuellement reserve. Vous pouvez toutefois nous contacter pour etre informe d'un changement ou d'un autre profil similaire.
+                            Ce profil est actuellement réservé. Vous pouvez toutefois nous contacter pour être informé d'un changement ou d'un autre profil similaire.
                         </div>
                     @endif
 
@@ -89,8 +93,8 @@
 
                     <div class="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                         <div class="detail-pill">
-                            <p class="eyebrow">Age</p>
-                            <p class="mt-2 text-lg font-semibold text-amber-950">{{ $cat->display_age ?? 'Non renseigne' }}</p>
+                            <p class="eyebrow">Âge</p>
+                            <p class="mt-2 text-lg font-semibold text-amber-950">{{ $cat->display_age ?? 'Non renseigné' }}</p>
                         </div>
                         <div class="detail-pill">
                             <p class="eyebrow">Genre</p>
@@ -98,23 +102,23 @@
                         </div>
                         <div class="detail-pill">
                             <p class="eyebrow">Poids</p>
-                            <p class="mt-2 text-lg font-semibold text-amber-950">{{ $cat->weight ? $cat->weight . ' kg' : 'Non renseigne' }}</p>
+                            <p class="mt-2 text-lg font-semibold text-amber-950">{{ $cat->weight ? $cat->weight . ' kg' : 'Non renseigné' }}</p>
                         </div>
                     </div>
 
                     <div class="mt-7 space-y-5">
                         <p class="body-copy">
-                            {{ $cat->description ?: "Ce profil presente l'essentiel pour une premiere prise de contact : temperament, statut, age et informations utiles pour preparer l'adoption." }}
+                            {{ $cat->description ?: "Ce profil présente l'essentiel pour une première prise de contact : tempérament, statut, âge et informations utiles pour préparer l'adoption." }}
                         </p>
 
                         <div class="grid gap-3 sm:grid-cols-2">
                             <div class="detail-pill">
                                 <p class="eyebrow">Date de naissance</p>
-                                <p class="mt-2 text-[1.02rem] font-semibold text-amber-950">{{ $cat->birth_date ? $cat->birth_date->format('d/m/Y') : 'Non renseignee' }}</p>
+                                <p class="mt-2 text-[1.02rem] font-semibold text-amber-950">{{ $cat->birth_date ? $cat->birth_date->format('d/m/Y') : 'Non renseignée' }}</p>
                             </div>
                             <div class="detail-pill">
                                 <p class="eyebrow">Couleur</p>
-                                <p class="mt-2 text-[1.02rem] font-semibold text-amber-950">{{ $cat->color ?? 'Non renseignee' }}</p>
+                                <p class="mt-2 text-[1.02rem] font-semibold text-amber-950">{{ $cat->color ?? 'Non renseignée' }}</p>
                             </div>
                         </div>
                     </div>
@@ -130,7 +134,7 @@
                             Nous contacter
                         </a>
                     @endif
-                    <a href="{{ route('cats.index') }}" class="btn-secondary">Voir les autres chats</a>
+                    <a href="{{ route('cats.index', $cat->is_breeder ? ['type' => 'chatterie'] : []) }}" class="btn-secondary">Voir les autres chats</a>
                 </div>
             </div>
         </div>
@@ -139,36 +143,42 @@
     <section class="mt-12 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <article class="section-card p-8">
             <p class="eyebrow">Portrait</p>
-            <h2 class="section-title mt-4">Une fiche claire pour une decision plus sereine</h2>
+            <h2 class="section-title mt-4">Une fiche claire pour une décision plus sereine</h2>
             <p class="body-copy mt-5">
-                Nous presentons ici les informations essentielles utiles a une premiere evaluation :
-                categorie, statut, age, robe, poids, galerie et moyen de contact rapide.
+                Nous présentons ici les informations essentielles utiles à une première évaluation :
+                catégorie, statut, âge, robe, poids, galerie et moyen de contact rapide.
             </p>
             <div class="mt-7 flex flex-wrap gap-3">
-                <span class="tag-chip">{{ config('chatterie.statuses.' . $cat->status) }}</span>
+                <span class="tag-chip">{{ $cat->is_breeder ? 'Parent de la chatterie' : config('chatterie.statuses.' . $cat->status) }}</span>
                 <span class="tag-chip">{{ $cat->gender_label }}</span>
                 <span class="tag-chip">Contact rapide</span>
             </div>
         </article>
 
         <article class="luminous-panel p-8">
-            <p class="luminous-label">Avant l'adoption</p>
-            <h2 class="mt-4 font-display text-5xl leading-tight text-white">Comment se passe la suite ?</h2>
-            <div class="mt-5 grid gap-3">
-                @foreach ($adoptionSteps as $index => $step)
-                    <div class="rounded-[1.5rem] bg-white/10 px-5 py-4 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-white/75">Etape {{ $index + 1 }}</p>
-                        <p class="luminous-copy mt-2">{{ $step }}</p>
-                    </div>
-                @endforeach
-            </div>
+            @if ($cat->is_breeder)
+                <p class="luminous-label">Notre élevage</p>
+                <h2 class="mt-4 font-display text-5xl leading-tight text-white">Un parent de nos futurs chatons</h2>
+                <p class="luminous-copy mt-5">Ce chat fait partie de la chatterie et n'est pas proposé à la vente. Sa fiche vous permet de découvrir les parents de nos futures portées.</p>
+            @else
+                <p class="luminous-label">Avant l'adoption</p>
+                <h2 class="mt-4 font-display text-5xl leading-tight text-white">Comment se passe la suite ?</h2>
+                <div class="mt-5 grid gap-3">
+                    @foreach ($adoptionSteps as $index => $step)
+                        <div class="rounded-[1.5rem] bg-white/10 px-5 py-4 backdrop-blur-sm">
+                            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-white/75">Étape {{ $index + 1 }}</p>
+                            <p class="luminous-copy mt-2">{{ $step }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
         </article>
     </section>
 
     @if (is_array($cat->gallery) && count($cat->gallery) > 0)
         <section class="mt-12">
             <div class="mb-6">
-                <p class="eyebrow">Instants de lumiere</p>
+                <p class="eyebrow">Instants de lumière</p>
                 <h2 class="section-title mt-3">Galerie de {{ $cat->name }}</h2>
             </div>
 
@@ -208,7 +218,7 @@
                             @if ($relatedCat->image)
                                 <img src="{{ asset('storage/' . $relatedCat->image) }}" alt="Portrait de {{ $relatedCat->name }}" class="featured-portrait h-full w-full object-cover" loading="lazy" decoding="async">
                             @else
-                                <div class="flex h-full items-center justify-center px-8 text-center text-sm font-semibold text-white/80">Portrait a venir</div>
+                                <div class="flex h-full items-center justify-center px-8 text-center text-sm font-semibold text-white/80">Portrait à venir</div>
                             @endif
                         </div>
                         <div class="flex flex-1 flex-col p-6">
@@ -221,12 +231,12 @@
                             </div>
 
                             <p class="subtle-text mt-4">
-                                {{ Str::limit($relatedCat->description ?: "Un profil a decouvrir selon vos attentes et votre rythme de vie.", 100) }}
+                                {{ Str::limit($relatedCat->description ?: "Un profil à découvrir selon vos attentes et votre rythme de vie.", 100) }}
                             </p>
 
                             <div class="mt-5 flex items-center justify-between gap-3 border-t border-amber-100 pt-4">
                                 <span class="min-w-0 truncate text-sm text-stone-600">{{ $relatedCat->gender_label }}</span>
-                                <span class="btn-ghost shrink-0 px-0 text-amber-900">Voir details</span>
+                                <span class="btn-ghost shrink-0 px-0 text-amber-900">Voir les détails</span>
                             </div>
                         </div>
                     </a>

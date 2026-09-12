@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Modifier categorie - Admin')
-@section('page-title', 'Modifier la categorie')
+@section('title', 'Modifier une catégorie - Admin')
+@section('page-title', 'Modifier la catégorie')
 
 @section('content')
     <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data" class="admin-panel p-6 sm:p-8">
@@ -25,7 +25,7 @@
 
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    preview.innerHTML = `<img src="${e.target.result}" class="h-full w-full object-cover" alt="Apercu">`;
+                    preview.innerHTML = `<img src="${e.target.result}" class="h-full w-full object-cover" alt="Aperçu">`;
                 };
                 reader.readAsDataURL(file);
             });

@@ -3,7 +3,7 @@
 @php
     $labels = [
         'available' => 'Disponible',
-        'reserved' => 'Reserve',
+        'reserved' => 'Réservé',
         'sold' => 'Vendu',
     ];
 

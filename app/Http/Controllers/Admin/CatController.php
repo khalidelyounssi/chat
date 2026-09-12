@@ -52,7 +52,7 @@ class CatController extends Controller
 
         return redirect()
             ->route('admin.cats.index')
-            ->with('success', 'Chat ajoute avec succès.');
+            ->with('success', 'Chat ajouté avec succès.');
     }
 
     public function show(Cat $cat): View
@@ -126,7 +126,7 @@ class CatController extends Controller
 
         return redirect()
             ->route('admin.cats.index')
-            ->with('success', 'Chat supprime avec succès.');
+            ->with('success', 'Chat supprimé avec succès.');
     }
 
     /**

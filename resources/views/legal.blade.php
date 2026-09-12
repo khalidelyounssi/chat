@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'Mentions legales et hebergement - Chatterie des Soleils d\'Orient')
-@section('meta_description', 'Consultez les informations legales, de contact et de confidentialite associees au site de la chatterie.')
+@section('title', 'Mentions légales et hébergement - Chatterie des Soleils d\'Orient')
+@section('meta_description', 'Consultez les informations légales, de contact et de confidentialité associées au site de la chatterie.')
 @section('canonical', route('legal'))
 
 @section('meta_robots', 'index,follow')
@@ -29,7 +29,7 @@
                 [
                     '@type' => 'ListItem',
                     'position' => 2,
-                    'name' => 'Mentions legales',
+                    'name' => 'Mentions légales',
                     'item' => route('legal'),
                 ],
             ],
@@ -38,11 +38,11 @@
 
     <section class="hero-glow glass-panel overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
         <div class="max-w-3xl">
-            <p class="eyebrow">Mentions legales</p>
+            <p class="eyebrow">Mentions légales</p>
             <h1 class="page-title mt-4">Informations de publication</h1>
             <p class="body-copy mt-6">
-                Cette page rassemble les informations utiles relatives a l'editeur du site, a l'hebergement,
-                a la propriete intellectuelle et a l'usage des donnees personnelles.
+                Cette page rassemble les informations utiles relatives à l'éditeur du site, à l'hébergement,
+                à la propriété intellectuelle et à l'usage des données personnelles.
             </p>
         </div>
     </section>
@@ -93,7 +93,7 @@
         </article>
 
         <article class="section-card p-8">
-            <p class="eyebrow">Hebergement et confidentialite</p>
+            <p class="eyebrow">Hébergement et confidentialité</p>
             <div class="mt-5 space-y-4">
                 <div class="detail-pill">
                     <p class="eyebrow">Hebergeur</p>
@@ -109,21 +109,21 @@
                 <div class="detail-pill">
                     <p class="eyebrow">Propriete intellectuelle</p>
                     <p class="mt-2 subtle-text">
-                        Les textes, images et elements graphiques du site restent reserves a l'usage de la chatterie,
-                        sauf mention contraire ou accord prealable.
+                        Les textes, images et éléments graphiques du site restent réservés à l'usage de la chatterie,
+                        sauf mention contraire ou accord préalable.
                     </p>
                 </div>
                 <div class="detail-pill">
                     <p class="eyebrow">Donnees personnelles</p>
                     <p class="mt-2 subtle-text">
-                        Les informations transmises via e-mail, telephone ou messagerie servent uniquement a traiter
-                        vos demandes de contact et d'adoption. Vous pouvez demander leur suppression a tout moment.
+                        Les informations transmises via e-mail, téléphone ou messagerie servent uniquement à traiter
+                        vos demandes de contact et d'adoption. Vous pouvez demander leur suppression à tout moment.
                     </p>
                 </div>
                 <div class="detail-pill">
                     <p class="eyebrow">Cookies</p>
                     <p class="mt-2 subtle-text">
-                        Le site limite son usage de cookies au strict necessaire au fonctionnement technique,
+                        Le site limite son usage de cookies au strict nécessaire au fonctionnement technique,
                         sauf ajout futur d'outils de mesure ou de prise de rendez-vous.
                     </p>
                 </div>

@@ -39,6 +39,6 @@ class ReviewController extends Controller
     {
         $review->delete();
 
-        return back()->with('success', 'Avis supprime.');
+        return back()->with('success', 'Avis supprimé.');
     }
 }

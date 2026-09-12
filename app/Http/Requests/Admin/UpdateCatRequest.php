@@ -16,6 +16,7 @@ class UpdateCatRequest extends FormRequest
         $this->merge([
             'category_id' => $this->filled('category_id') ? (int) $this->input('category_id') : null,
             'breed' => $this->filled('breed') ? trim((string) $this->input('breed')) : 'Abyssin',
+            'is_breeder' => $this->boolean('is_breeder'),
             'remove_image' => $this->boolean('remove_image'),
             'remove_gallery' => $this->boolean('remove_gallery'),
         ]);
@@ -31,6 +32,7 @@ class UpdateCatRequest extends FormRequest
             'color' => ['nullable', 'string', 'max:255'],
             'weight' => ['nullable', 'numeric', 'min:0', 'max:20'],
             'status' => ['required', 'in:available,reserved,sold'],
+            'is_breeder' => ['required', 'boolean'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:4096'],
             'gallery' => ['nullable', 'array'],

@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p class="subtle-text max-w-2xl">Une vue plus lisible sur mobile, avec cartes compactes sur petit ecran et tableau detaille sur desktop.</p>
+        <p class="subtle-text max-w-2xl">Une vue plus lisible sur mobile, avec cartes compactes sur petit écran et tableau détaillé sur ordinateur.</p>
         <a href="{{ route('admin.cats.create') }}" class="btn-primary w-full sm:w-auto">Ajouter un chat</a>
     </div>
 
@@ -23,9 +23,12 @@
                         <div class="flex flex-wrap items-start justify-between gap-3">
                             <div>
                                 <h2 class="text-2xl font-semibold text-amber-950">{{ $cat->name }}</h2>
-                                <p class="mt-1 text-sm text-stone-600">{{ $cat->category?->name ?? 'Aucune categorie' }}</p>
+                                <p class="mt-1 text-sm text-stone-600">{{ $cat->category?->name ?? 'Aucune catégorie' }}</p>
                             </div>
-                            <x-status-badge :status="$cat->status" />
+                            <div class="flex flex-wrap gap-2">
+                                @if ($cat->is_breeder)<span class="tag-chip">Chatterie</span>@endif
+                                <x-status-badge :status="$cat->status" />
+                            </div>
                         </div>
 
                         <div class="mt-4 flex flex-wrap gap-2">
@@ -41,7 +44,7 @@
                 </div>
             </article>
         @empty
-            <div class="admin-panel px-5 py-8 text-center text-stone-500">Aucun chat enregistre.</div>
+            <div class="admin-panel px-5 py-8 text-center text-stone-500">Aucun chat enregistré.</div>
         @endforelse
     </div>
 
@@ -52,7 +55,7 @@
                     <tr>
                         <th class="px-5 py-3">Image</th>
                         <th class="px-5 py-3">Nom</th>
-                        <th class="px-5 py-3">Categorie</th>
+                        <th class="px-5 py-3">Catégorie</th>
                         <th class="px-5 py-3">Statut</th>
                         <th class="px-5 py-3 text-right">Actions</th>
                     </tr>
@@ -69,7 +72,12 @@
                             </td>
                             <td class="px-5 py-3 font-semibold text-stone-800">{{ $cat->name }}</td>
                             <td class="px-5 py-3 text-stone-600">{{ $cat->category?->name ?? 'Aucune' }}</td>
-                            <td class="px-5 py-3"><x-status-badge :status="$cat->status" /></td>
+                            <td class="px-5 py-3">
+                                <div class="flex flex-wrap gap-2">
+                                    @if ($cat->is_breeder)<span class="tag-chip">Chatterie</span>@endif
+                                    <x-status-badge :status="$cat->status" />
+                                </div>
+                            </td>
                             <td class="px-5 py-3 text-right">
                                 <div class="inline-flex items-center gap-2">
                                     <a href="{{ route('admin.cats.show', $cat) }}" class="rounded-full border border-stone-200 px-3 py-1.5 text-xs font-semibold text-stone-600 hover:bg-stone-50">Voir</a>
@@ -84,7 +92,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-5 py-8 text-center text-stone-500">Aucun chat enregistre.</td>
+                            <td colspan="5" class="px-5 py-8 text-center text-stone-500">Aucun chat enregistré.</td>
                         </tr>
                     @endforelse
                 </tbody>
