@@ -52,7 +52,7 @@ return [
             'CHATTERIE_META_DESCRIPTION',
             "Chatterie des Soleils d'Orient à Saint-Avé, proche de Vannes : élevage de chats abyssins, accompagnement à l'adoption, disponibilités claires et contact direct avec la propriétaire."
         ),
-        'og_image' => env('CHATTERIE_OG_IMAGE', 'images/soleils-abyssins-emblem.png'),
+        'og_image' => env('CHATTERIE_OG_IMAGE', 'images/soleils-orient-abyssins-emblem.png'),
     ],
 
     'socials' => [

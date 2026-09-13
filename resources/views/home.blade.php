@@ -9,7 +9,7 @@
         use Illuminate\Support\Str;
 
         $site = config('chatterie.site');
-        $logoPath = 'images/soleils-abyssins-emblem.png';
+        $logoPath = 'images/soleils-orient-abyssins-emblem.png';
         $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
         $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
         $marketCity = (string) data_get($site, 'market_city', 'Vannes');

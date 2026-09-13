@@ -2,7 +2,7 @@
     $site = config('chatterie.site');
     $siteName = (string) data_get($site, 'name', "Chatterie des Soleils d'Orient");
     $siteTagline = (string) data_get($site, 'tagline', "Chatterie d'Abyssins");
-    $logoPath = 'images/soleils-abyssins-emblem.png';
+    $logoPath = 'images/soleils-orient-abyssins-emblem.png';
     $logoVersion = file_exists(public_path($logoPath)) ? filemtime(public_path($logoPath)) : null;
     $logoAsset = asset($logoPath) . ($logoVersion ? '?v=' . $logoVersion : '');
     $metaTitle = trim($__env->yieldContent('title', $siteName));
